@@ -1,4 +1,4 @@
-import type { DrawOp, Instances, InstanceSignature, TextureSignature, UniformSignature, VertexSignature, Vertices } from "../Types/VirtualResources";
+import type { DrawOp, Instances, InstanceSignature, RotatingTexture, Texture, TextureSignature, Uniforms, UniformSignature, VertexSignature, Vertices } from "../Types/VirtualResources";
 import PreResource from "./PreResourceBase";
 
 
@@ -48,13 +48,13 @@ function InstancesFactory(sig: Partial<InstanceSignature>, value: {
     };
     return new PreResource(val, deps);
 }
-function uniformsFactory(sig: Partial<UniformSignature>, value: { [uniformName: string]: any }, deps: any[]) {
+function UniformsFactory(sig: Partial<UniformSignature>, value: () => { [uniformName: string]: any }, deps: any[]) {
     const defaultSignature: UniformSignature = {
         type: 'uniforms',
         attributes: {}
     };
     sig = { ...defaultSignature, ...sig };
-    const val : Instances = {
+    const val : Uniforms = {
         signature: sig,
         uniformsData: {
             stage: 'author',
@@ -71,9 +71,43 @@ function TextureFactory(sig: Partial<TextureSignature>, drawOps: DrawOp[], deps:
         height: 256,
     };
     sig = { ...defaultSignature, ...sig };
-    const val : Instances = {
+    const val : Texture = {
         signature: sig,
         drawOps: drawOps
+    };
+    return new PreResource(val, deps);
+}
+
+function RotatingTextureFactory(sig: Partial<TextureSignature>, drawOps: DrawOp[], deps: any[]) {
+    const defaultSignature: TextureSignature = {
+        type: 'texture',
+        format: "rgba8",
+        width: 256,
+        height: 256,
+        historyLength: 2,
+    };
+    sig = { ...defaultSignature, ...sig };
+    const val : RotatingTexture = {
+        signature: sig,
+        drawOps: drawOps
+    };
+    return new PreResource(val, deps);
+}
+
+function InputTextureFactory(sig: Partial<TextureSignature>, value: () => ArrayBuffer, deps: any[]) {
+    const defaultSignature: TextureSignature = {
+        type: 'texture',
+        format: "rgba8",
+        width: 256,
+        height: 256,
+    };
+    sig = { ...defaultSignature, ...sig };
+    const val : Texture = {
+        signature: sig,
+        inputTextureData: {
+            stage: 'author',
+            data: value
+        }
     };
     return new PreResource(val, deps);
 }
@@ -82,6 +116,8 @@ function TextureFactory(sig: Partial<TextureSignature>, drawOps: DrawOp[], deps:
 export {
     VerticesFactory,
     InstancesFactory,
-    uniformsFactory,
-    TextureFactory
+    UniformsFactory,
+    TextureFactory,
+    RotatingTextureFactory,
+    InputTextureFactory
 };

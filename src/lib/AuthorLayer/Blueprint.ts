@@ -5,7 +5,7 @@ import resolveDependencies from "./authorHelpers/resolveDependencies";
 import resolveBlobsAndResources from "./authorHelpers/resolveBlobsAndResources";
 import type { VirtualResourceGraph } from "../Types/VirtualResources";
 
-class Graphics {
+class Blueprint {
     assetRegistry: AssetRegistry = { graphId: "", blobIds: [] };
     blobMap: BlobMap = {};
     dependencyArrays: DependencyArrays = {};
@@ -21,7 +21,6 @@ class Graphics {
             this.dependencyArrays,
             this.blobMap
         );
-        console.log(blobs,newBlobMap,newDependencyArrays);
         this.dependencyArrays = newDependencyArrays;
         this.blobMap = newBlobMap;
 
@@ -49,4 +48,4 @@ class Graphics {
     }
 }
 
-export default Graphics;
+export default Blueprint;
