@@ -6,6 +6,7 @@ import Graphics from './lib/AuthorLayer/Blueprint.ts'
 import { Texture, Vertices } from './lib/AuthorLayer/index.ts'
 import type PreResource from './lib/AuthorLayer/PreResourceBase.ts'
 import type { PreResourceGraph } from './lib/AuthorLayer/types.ts'
+import Drawing from './lib/RenderLayer/Drawing.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -96,6 +97,8 @@ function mainRender() {
 }
 
 const gfx = new Graphics();
-console.log(gfx.update(mainRender()));
+const {assets, assetRegistry} = gfx.update(mainRender());
+const drawing = new Drawing();
+drawing.submit(assetRegistry.graphId, assets);
 console.log(gfx.update(mainRender()));
 setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
