@@ -1,5 +1,6 @@
 import markDirtyResources from "./RenderHelpers/markDirtyResources";
 import type { DirtyResourceMap } from "./RenderHelpers/types";
+import determineRequiredPhysicalResources from "./RenderHelpers/determineRequiredPhysicalResources";
 
 class Drawing {
 
@@ -13,7 +14,6 @@ class Drawing {
         const oldAssets = this.assets;
         // store the graph id and assets
         this.graphId = graphId;
-        const graph = relabelResourceIds(assets[graphId]);
         this.assets = assets;
 
         // perform the "dirty" marking of resources
@@ -21,12 +21,12 @@ class Drawing {
         this.dirtyResources = dirtyResources;
     }
 
-    private synchronize() {
+    private synchronize(targetTexture) {
         if (!this.graphId || !this.assets) throw new Error("No assets submitted to Drawing");
         const graph = this.assets[this.graphId];
 
-        const requiredPhysicalResourceMap = determineRequiredPhysicalResources(graph);
-
+        const requiredPhysicalResourceMap = determineRequiredPhysicalResources(graph,targetTexture);
+        console.log("Required physical resources:", requiredPhysicalResourceMap);
 
         // synchronize logical resources with GPU resources
         // produce a map of required GPU resources
@@ -36,14 +36,14 @@ class Drawing {
     private materialize(targetTexture) {}
     private readback(targetTexture) {}
     capture(targetTexture) {
-        this.synchronize();
+        this.synchronize(targetTexture);
         this.materialize(targetTexture);
         return this.readback(targetTexture);
     }
 
     private blit(targetTexture) {}
     draw(targetTexture) {
-        this.synchronize();
+        this.synchronize(targetTexture);
         this.materialize(targetTexture);
         this.blit(targetTexture);
     }

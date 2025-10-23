@@ -1,4 +1,4 @@
-import type { VirtualResource } from "../../Types/VirtualResources";
+import type { RotatingTexture, VirtualResource, Texture } from "../../Types/VirtualResources";
 
 type DirtyResourceMap = {
     [resourceId: string]: boolean;
@@ -33,8 +33,22 @@ type PhysicalResourceMap = {
     };
 }
 
+type RenderPassSequence = [string,(Texture | RotatingTexture)][];
+
+type TextureLifetimesMap = {
+    [transientTextureId: string]: {
+        firstUseRenderPassIdx: number;
+        lastUseRenderPassIdx: number;
+        firstUseDrawOpIdx: number;
+        lastUseDrawOpIdx: number;
+    }
+}
+
+
 export type {
     DirtyResourceMap,
     PhysicalResourceMap,
-    RequiredPhysicalResourcesMap
+    RequiredPhysicalResourcesMap,
+    RenderPassSequence,
+    TextureLifetimesMap
 }

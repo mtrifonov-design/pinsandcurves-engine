@@ -100,5 +100,6 @@ const gfx = new Graphics();
 const {assets, assetRegistry} = gfx.update(mainRender());
 const drawing = new Drawing();
 drawing.submit(assetRegistry.graphId, assets);
+drawing.draw("c/t");
 console.log(gfx.update(mainRender()));
 setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
