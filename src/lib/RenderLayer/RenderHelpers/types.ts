@@ -1,4 +1,4 @@
-import type { RotatingTexture, VirtualResource, Texture } from "../../Types/VirtualResources";
+import type { RotatingTexture, VirtualResource, Texture, VertexSignature, InstanceSignature, UniformSignature } from "../../Types/VirtualResources";
 
 type DirtyResourceMap = {
     [resourceId: string]: boolean;
@@ -6,21 +6,39 @@ type DirtyResourceMap = {
 
 type PhysicalResourceDescriptor = {
     signature: VirtualResource['signature'];
-    gpuResource: any; 
+    gpuResource: string; 
     persistent: boolean;
 }
 
+type PhysicalSignature = 
+| VirtualResource['signature']
+| {
+    type: 'program';
+    vertexSignature: VertexSignature;
+    instanceSignature?: InstanceSignature;
+    uniformSignatures: {[bindingName: string]: UniformSignature};
+    textures: {
+        [textureSlot: string]: {
+            textureSignature: VirtualResource['signature'];
+            sampler: {
+                filter: 'nearest' | 'linear';
+                wrap: 'clamp-to-edge' | 'repeat' | 'mirror-repeat';
+            }
+        }
+    }
+}
+
 type PhysicalResourcePoolDescriptor = {
-    signature: VirtualResource['signature'];
-    gpuResources: any[];
+    signature: PhysicalSignature;
+    gpuResources: string[];
 }
 
 type RequiredPhysicalResourcesMap = {
     namedResources: {
-        [resourceId : string]: VirtualResource['signature']
+        [resourceId : string]: PhysicalSignature
     };
     freeResources: {
-        [resourceId : string]: [VirtualResource['signature'], number]
+        [resourceId : string]: [PhysicalSignature, number]
     };
 }
 
@@ -50,5 +68,6 @@ export type {
     PhysicalResourceMap,
     RequiredPhysicalResourcesMap,
     RenderPassSequence,
-    TextureLifetimesMap
+    TextureLifetimesMap,
+    PhysicalSignature,
 }

@@ -1,6 +1,6 @@
-import type { VirtualResourceGraph } from "../../Types/VirtualResources";
+import type { InstanceSignature, VertexSignature, VirtualResourceGraph } from "../../Types/VirtualResources";
 import derivePhysicalResourceId from "./derivePhysicalResourceId";
-import type { RenderPassSequence, RequiredPhysicalResourcesMap, TextureLifetimesMap } from "./types";
+import type { PhysicalSignature, RenderPassSequence, RequiredPhysicalResourcesMap, TextureLifetimesMap } from "./types";
 import topoSortResources from "./topoSortResources";
 import deriveSignatureId from "./deriveSignatureId";
 import computeTextureLifetimes from "./computeTextureLifetimes";
@@ -31,6 +31,36 @@ function determineRequiredPhysicalResources(graph: VirtualResourceGraph, targetT
     const renderPassSeq : RenderPassSequence = sortedResources
         .filter(resId => graph[resId].signature.type === "texture" || graph[resId].signature.type === "rotating-texture")
         .map(resId => [resId, graph[resId]]);
+
+    // compute the unique programs that we will need to render the passes
+    const uniquePrograms = new Set<string>();
+    for (const pass of renderPassSeq) {
+        for (const drawOp of pass[1].drawOps) {
+            const programSignature : PhysicalSignature = {
+                type: 'program',
+                vertexSignature: graph[drawOp.vertices.resource as string].signature as VertexSignature,
+                instanceSignature: drawOp.instances ? (graph[drawOp.instances.resource as string].signature as InstanceSignature) : undefined,
+                uniformSignatures: Object.fromEntries(
+                    Object.entries(drawOp.uniforms).map(([bindingName, slot]) => [
+                        bindingName,
+                        graph[slot.resource as string].signature
+                    ])
+                ),
+                textures: Object.fromEntries(
+                    Object.entries(drawOp.textures).map(([textureSlot, textureInfo]) => [
+                        textureSlot,
+                        {
+                            textureSignature: graph[textureInfo.texture.resource as string].signature,
+                            sampler: textureInfo.sampler
+                        }
+                    ])
+                )
+                }
+            const programId = derivePhysicalResourceId('program', programSignature);
+            uniquePrograms.add(programId);
+            requiredPhysicalResourcesMap.namedResources[programId] = programSignature;
+        }
+    }
 
     const textureLifetimes : TextureLifetimesMap = computeTextureLifetimes(renderPassSeq);
     const uniqueSignatures = new Set<string>();
