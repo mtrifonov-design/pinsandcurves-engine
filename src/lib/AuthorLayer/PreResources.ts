@@ -4,8 +4,8 @@ import PreResource from "./PreResourceBase";
 
 function VerticesFactory(sig: Partial<VertexSignature>, value: {
     count: number;
-    vertices: () => Float32Array;
-    indices: () => Uint16Array;
+    vertices: () => any;
+    indices: () => any;
 }, deps: any[]) {
     const defaultSignature: VertexSignature = {
         type: 'vertices',
@@ -16,7 +16,7 @@ function VerticesFactory(sig: Partial<VertexSignature>, value: {
     sig = { ...defaultSignature, ...sig };
     const val : Vertices = {
         signature: sig,
-        vertexCount: value.count,
+        triangleCount: value.count,
         verticesData: {
             stage: 'author',
             data: value.vertices

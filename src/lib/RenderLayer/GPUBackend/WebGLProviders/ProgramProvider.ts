@@ -97,7 +97,9 @@ class ProgramProvider {
         ${this.programDescription.textureNames.map(name => `uniform sampler2D ${name};`).join('\n')}
         ${this.programDescription.fragmentShader}
         `;
-        //console.log(vertexShaderSource)
+        // console.log(vertexShaderSource)
+        // console.log(fragmentShaderSource)
+        
         const vertexShader = this.gl.createShader(this.gl.VERTEX_SHADER);
         if (!vertexShader) {
             throw new Error('Failed to create vertex shader');

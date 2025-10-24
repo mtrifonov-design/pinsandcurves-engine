@@ -5,11 +5,12 @@ import synchronizePhysicalResources from "./GPUBackend/synchronizePhysicalResour
 import clearInputNodes from "./GPUBackend/clearInputNodes";
 import performRenderPasses from "./GPUBackend/performRenderPasses";
 import blitToScreen from "./GPUBackend/blitToScreen";
+import type GPUBackend from "./GPUBackend/gpuBackend";
 
 class Drawing {
 
-    private GPUBackend : unknown;
-    constructor(gpuBackend : unknown) {
+    private GPUBackend : GPUBackend;
+    constructor(gpuBackend : GPUBackend) {
         this.GPUBackend = gpuBackend;
     }
 
@@ -35,7 +36,7 @@ class Drawing {
     private synchronize(targetTexture : string) {
         if (!this.graphId || !this.assets) throw new Error("No assets submitted to Drawing");
         const graph = this.assets[this.graphId];
-        const requiredPhysicalResourceMap = determineRequiredPhysicalResources(graph,targetTexture);
+        const requiredPhysicalResourceMap = determineRequiredPhysicalResources(this.assets,graph,targetTexture);
         this.physicalResourceMap = synchronizePhysicalResources(
             this.physicalResourceMap,
             requiredPhysicalResourceMap,
@@ -82,9 +83,11 @@ class Drawing {
     }
 
     private blit(targetTexture : string) {
+        if (!this.graphId || !this.assets) throw new Error("Error")
         blitToScreen(
             this.GPUBackend,
             this.physicalResourceMap,
+            this.assets[this.graphId],
             targetTexture,
         )
     }

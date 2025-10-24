@@ -17,20 +17,26 @@ function clearInputNodes(
     const graph : VirtualResourceGraph = assets[graphId];
     const inputNodeTypes = ["input-texture","vertices","instances","uniforms"];
     const dirtyInputResources: string[] = topoSortResources(graph, targetTexture)
-    .filter(resId => Object.keys(drm).includes(resId))
-    .filter(resId => inputNodeTypes.includes(graph[resId].signature.type));
-    
-    for (const resId of dirtyInputResources) {
-        delete drm[resId];
-    }
+    .filter(resId => inputNodeTypes.includes(graph[resId].signature.type))
+    .map(resId => {
+        const signature = graph[resId].signature;
+        const physicalResourceId = derivePhysicalResourceId(resId, signature);
+        return [resId,physicalResourceId];
+    })
+    .filter(([resId,pResId]) => Object.keys(drm).includes(pResId));
 
+    for (const [resId,pResId] of dirtyInputResources) {
+        delete drm[pResId];
+    }
     // now we need to upload new data to GPU for each dirty input resource
-    for (const resId of dirtyInputResources) {
+    for (const [resId,pResId] of dirtyInputResources) {
         const resource = graph[resId];
         const signature = resource.signature;
         const physicalResourceId = derivePhysicalResourceId(resId, signature);
         const physicalResource = physicalResourceMap.namedResources[physicalResourceId];
-        uploadResourceData(physicalResource.gpuResource, resource, assets[graphId], assets, gpuBackend);
+        uploadResourceData(resId, resource, assets[graphId], assets, gpuBackend,
+            physicalResourceMap
+        );
     }
     return drm;
 }

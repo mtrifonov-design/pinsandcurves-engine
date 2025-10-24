@@ -7,24 +7,7 @@ import { Texture, Vertices } from './lib/AuthorLayer/index.ts'
 import type PreResource from './lib/AuthorLayer/PreResourceBase.ts'
 import type { PreResourceGraph } from './lib/AuthorLayer/types.ts'
 import Drawing from './lib/RenderLayer/Drawing.ts'
-
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+import GPUBackend from './lib/RenderLayer/GPUBackend/gpuBackend.ts'
 
 function renderTextures(vertices: PreResource): PreResourceGraph {
   const t = Texture({
@@ -41,13 +24,17 @@ function renderTextures(vertices: PreResource): PreResourceGraph {
       vertexShaderData: {
         stage: 'author',
         data: () => `
-      shader code
+        void main() {
+          gl_Position = position;
+        }
       `,
     },
         fragmentShaderData: {
           stage: 'author',
           data: () => `
-      shader code
+          void main() {
+            outColor = vec4(1.,0.,0.,1.);
+          }
       `
         }
       
@@ -64,42 +51,32 @@ function mainRender() {
       position: 'vec4'
     }
   }, {
-    count: 3,
-    vertices: () => new Float32Array([
+    count: 1,
+    vertices: () => ({
+      position: [
       0, 0, 0, 1,
       1, 0, 0, 1,
       0, 1, 0, 1,
-    ]),
-    indices: () => new Uint16Array([
+    ]}),
+    indices: () => ([
       0, 1, 2
     ])
   }, []);
-  const b = Vertices({
-    attributes: {
-      position: 'vec4',
-      color: 'vec4'
-    }
-  }, {
-    count: 3,
-    vertices: () => new Float32Array([
-      0, 0, 0, 1,
-      1, 0, 0, 1,
-      0, 1, 0, 1,
-    ]),
-    indices: () => new Uint16Array([
-      0, 1, 2
-    ])
-  }, []);
-
   const c = renderTextures(a);
-
-  return { a, b, c };
+  return { a,c };
 }
+
+
 
 const gfx = new Graphics();
 const {assets, assetRegistry} = gfx.update(mainRender());
-const drawing = new Drawing();
+const canvas = document.getElementById("mainCanvas") as HTMLCanvasElement;
+const gl = canvas.getContext("webgl2", {
+  antialias: false,
+});
+if (!gl) throw new Error("Unable to initialize WebGL2");
+const gpuBackend = new GPUBackend(gl);
+const drawing = new Drawing(gpuBackend);
 drawing.submit(assetRegistry.graphId, assets);
 drawing.draw("c/t");
 console.log(gfx.update(mainRender()));
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)

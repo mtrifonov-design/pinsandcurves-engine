@@ -1,5 +1,6 @@
 
 import computeTextureLifetimes from "../RenderHelpers/computeTextureLifetimes";
+import derivePhysicalResourceId from "../RenderHelpers/derivePhysicalResourceId";
 import topoSortResources from "../RenderHelpers/topoSortResources";
 import type { PhysicalResourceMap, DirtyResourceMap, RenderPassSequence, RenderGraphAssets } from "../RenderHelpers/types";
 import performRenderPass from "./performRenderPass";
@@ -22,11 +23,19 @@ function performRenderPasses(
     const sortedResources = topoSortResources(assets[graphId], targetTexture);
     const renderPassSeq : RenderPassSequence = sortedResources
     .filter(resId => ["rotating-texture","texture"].includes(assets[graphId][resId].signature.type))
-    .filter((resId => drm[resId] !== undefined))
+    .filter((resId => {
+        // filter only resources that are either dirty or are not resident in the physical resource map
+        const dirty = drm[resId] !== undefined;
+        const signature = assets[graphId][resId].signature;
+        const physicalId = derivePhysicalResourceId(resId, signature);
+        const resident = prm.namedResources[physicalId] !== undefined;
+        return dirty || !resident;
+    }))
     .map(resId => [resId, assets[graphId][resId]]);
 
     const textureLifetimeMap = computeTextureLifetimes(renderPassSeq);
 
+    let renderPassIdx = 0;
     for (const [resId, res] of renderPassSeq) {
         performRenderPass(
             resId,
@@ -34,9 +43,12 @@ function performRenderPasses(
             prm,
             textureLifetimeMap,
             gpuBackend,
+            renderPassIdx,
+            assets,
         );
+        renderPassIdx++;
         // after performing the render pass, we can clear the dirty flag for this resource
-        delete drm[resId];
+        if (drm[resId]) delete drm[resId];
     }
     return [drm, prm];
 }

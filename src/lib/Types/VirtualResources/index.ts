@@ -57,7 +57,7 @@ type BlobInput =
 
 type Vertices = {
     signature: VertexSignature;
-    vertexCount: number;
+    triangleCount: number;
     verticesData: BlobInput;
     indicesData: BlobInput;
 };

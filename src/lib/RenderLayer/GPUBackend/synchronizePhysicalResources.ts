@@ -1,6 +1,7 @@
 import type { PhysicalResourceMap, RequiredPhysicalResourcesMap } from "../RenderHelpers/types";
 import type GPUBackend from "./gpuBackend";
 
+
 function synchronizePhysicalResources(
     currentPhysicalResourceMap: PhysicalResourceMap,
     requiredPhysicalResourceMap: RequiredPhysicalResourcesMap,
