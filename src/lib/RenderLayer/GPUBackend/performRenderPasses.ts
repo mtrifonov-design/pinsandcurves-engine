@@ -32,6 +32,7 @@ function performRenderPasses(
         return dirty || !resident;
     }))
     .map(resId => [resId, assets[graphId][resId]]);
+    
 
     const textureLifetimeMap = computeTextureLifetimes(renderPassSeq);
 

@@ -48,7 +48,8 @@ function resolveDependencies(flattenedPrg: FlattenedPreResourceGraph) {
 
                 for (const [bindingName, textureInfo] of Object.entries(drawOp.textures)) {
                     const texturePreResource = textureInfo.texture;
-                    if (texturePreResource.stage !== "author" || texturePreResource.resource.value.signature.type !== "input-texture") {
+                    const allowedTypes = ["texture", "rotating-texture", "input-texture"];
+                    if (texturePreResource.stage !== "author" || !allowedTypes.includes(texturePreResource.resource.value.signature.type)) {
                         throw new Error("DrawOp texture bindings must be PreResources");
                     }
                     textureInfo.texture = {

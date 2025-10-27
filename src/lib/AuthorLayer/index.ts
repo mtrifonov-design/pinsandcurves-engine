@@ -6,8 +6,7 @@ const Vertices = PreResources.VerticesFactory;
 const Instances = PreResources.InstancesFactory;
 const Uniforms = PreResources.UniformsFactory;
 const Texture = PreResources.TextureFactory;
-const RotatingTexture = PreResources.RotatingTextureFactory;
-const InputTexture = PreResources.InputTextureFactory;
+const DrawOp = PreResources.DrawOpFactory;
 
 export {
     Graphics,
@@ -15,6 +14,5 @@ export {
     Instances,
     Uniforms,
     Texture,
-    RotatingTexture,
-    InputTexture
+    DrawOp
 };

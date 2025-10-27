@@ -22,7 +22,7 @@ function extractDrawOpDependencies(drawOp: DrawOp): string[] {
 
 function getDependents(resourceId: string, graph: VirtualResourceGraph): string[] {
     const dependents: string[] = [];
-    for (const [resId, resource] of Object.entries(graph.resources)) {
+    for (const [resId, resource] of Object.entries(graph)) {
         switch (resource.signature.type) {
             case "vertices":
             case "instances":

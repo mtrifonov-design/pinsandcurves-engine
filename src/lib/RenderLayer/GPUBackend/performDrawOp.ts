@@ -19,6 +19,7 @@ function performDrawOp(
     tlm: TextureLifetimesMap,
     assets: RenderGraphAssets
 ) {
+
     const gl = gpuBackend.gl;
     const vertices = graph[drawOp.vertices.resource as string] as Vertices;
     const instanced = drawOp.instances !== undefined;

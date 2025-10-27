@@ -37,7 +37,7 @@ function markDirtyResources(oldGraph : VirtualResourceGraph, newGraph : VirtualR
             isDirty = true;
         }
         if (isDirty) {
-            dirtyResources[resourceId] = true;
+            dirtyResources[derivedResourceId] = true;
         }
         // Finally, propagate dirtiness from dependencies
         recursivelyPropagateDirtiness(resourceId, newGraph, dirtyResources);

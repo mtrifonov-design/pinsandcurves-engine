@@ -21,12 +21,20 @@ function setupVerticesAndInstances(
     const vPID_GPU = prm.namedResources[vPID].gpuResource;
     const vResource = gpuBackend.getResource(vPID_GPU) as VertexProvider;
 
+    // clean up work. unset all attributes first
+    const maxAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
+    for (let i = 0; i < maxAttributes; i++) {
+        gl.disableVertexAttribArray(i);
+        gl.vertexAttribDivisor(i, 0);
+    }
+
     gl.bindBuffer(gl.ARRAY_BUFFER, vResource.vertexBuffer);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vResource.indexBuffer);
     const vertexStructure = vResource.vertexStructureObject;
     for (let i = 0; i < vertexStructure.length; i++) {
         const attribute = vertexStructure[i];
         const location = attribute.layoutIdx;
+        gl.enableVertexAttribArray(location);
         gl.vertexAttribPointer(
             location, 
             getPropertyTypeSize(attribute.type), 
@@ -50,6 +58,7 @@ function setupVerticesAndInstances(
         for (let i = 0; i < instanceStructure.length; i++) {
         const attribute = instanceStructure[i];
         const location = l + attribute.layoutIdx;
+        gl.enableVertexAttribArray(location);
         gl.vertexAttribPointer(
             location,
             getPropertyTypeSize(attribute.type),

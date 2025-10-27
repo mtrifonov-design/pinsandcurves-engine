@@ -8,6 +8,13 @@
   </head>
   <body style="display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
     <canvas id="mainCanvas" width="800" height="600"></canvas>
+    <input type="range" id="inputRange" min="0" max="100" value="50" style="position:absolute; top:20px; left:50%; transform:translateX(-50%); width:300px;">
+    <select id="inputSelect" style="position:absolute; top:60px; left:50%; transform:translateX(-50%);">
+      <option value="defaultTriangle" selected>Default Triangle</option>
+      <option value="defaultTriangleInstanced" >Default Triangle Instanced</option>
+      <option value="defaultTriangleInstancedUsedAsTexture">Default Triangle Instanced and Tiled</option>
+      <option value="pinsAndCurves">Pins And Curves</option>
+    </select>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

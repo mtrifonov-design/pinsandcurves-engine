@@ -1,75 +1,13 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
-import Graphics from './lib/AuthorLayer/Blueprint.ts'
-import { Texture, Vertices } from './lib/AuthorLayer/index.ts'
-import type PreResource from './lib/AuthorLayer/PreResourceBase.ts'
-import type { PreResourceGraph } from './lib/AuthorLayer/types.ts'
 import Drawing from './lib/RenderLayer/Drawing.ts'
 import GPUBackend from './lib/RenderLayer/GPUBackend/gpuBackend.ts'
+import AssetStore from './AssetStore.ts'
+import Blueprint from './lib/AuthorLayer/Blueprint.ts'
+import defaultTriangle from './scene/defaultTriangle/main.ts'
+import defaultTriangleInstanced from './scene/defaultTriangleInstanced/main.ts'
+import defaultTriangleInstancedUsedAsTexture from './scene/defaultTriangleInstancedUsedAsTexture/main.ts'
 
-function renderTextures(vertices: PreResource): PreResourceGraph {
-  const t = Texture({
-    width: 256,
-    height: 256,
-  }, [
-    {
-      uniforms: {},
-      textures: {},
-      vertices: {
-        stage: 'author',
-        resource: vertices
-      },
-      vertexShaderData: {
-        stage: 'author',
-        data: () => `
-        void main() {
-          gl_Position = position;
-        }
-      `,
-    },
-        fragmentShaderData: {
-          stage: 'author',
-          data: () => `
-          void main() {
-            outColor = vec4(1.,0.,0.,1.);
-          }
-      `
-        }
-      
-    }
-  ], []);
-  return {
-    t
-  }
-}
-
-function mainRender() {
-  const a = Vertices({
-    attributes: {
-      position: 'vec4'
-    }
-  }, {
-    count: 1,
-    vertices: () => ({
-      position: [
-      0, 0, 0, 1,
-      1, 0, 0, 1,
-      0, 1, 0, 1,
-    ]}),
-    indices: () => ([
-      0, 1, 2
-    ])
-  }, []);
-  const c = renderTextures(a);
-  return { a,c };
-}
-
-
-
-const gfx = new Graphics();
-const {assets, assetRegistry} = gfx.update(mainRender());
+const assetStore = new AssetStore();
 const canvas = document.getElementById("mainCanvas") as HTMLCanvasElement;
 const gl = canvas.getContext("webgl2", {
   antialias: false,
@@ -77,6 +15,41 @@ const gl = canvas.getContext("webgl2", {
 if (!gl) throw new Error("Unable to initialize WebGL2");
 const gpuBackend = new GPUBackend(gl);
 const drawing = new Drawing(gpuBackend);
-drawing.submit(assetRegistry.graphId, assets);
-drawing.draw("c/t");
-console.log(gfx.update(mainRender()));
+const unsubscribe = assetStore.subscribe((store, graphId) => {
+  const storeObj = Object.fromEntries(store);
+  drawing.submit(graphId, storeObj);
+  drawing.draw("texture");
+});
+
+const gfx = new Blueprint();
+const inputRange = document.getElementById("inputRange") as HTMLInputElement;
+const inputSelect = document.getElementById("inputSelect") as HTMLSelectElement;
+
+const demos : { [key: string]: (input: number, selectedDemo:string) => any } = {
+  defaultTriangle,
+  defaultTriangleInstanced,
+  defaultTriangleInstancedUsedAsTexture
+}
+let selectedDemo = inputSelect.value;
+let inputValue = parseFloat(inputRange.value) / 100;
+inputSelect.addEventListener("change", () => {
+  selectedDemo = inputSelect.value;
+  const { addedAssets, deletedAssetIds, graphId } = gfx.update(demos[selectedDemo](inputValue, selectedDemo));
+  assetStore.transaction(addedAssets, deletedAssetIds, graphId);
+});
+
+inputRange.addEventListener("input", () => {
+  inputValue = parseFloat(inputRange.value) / 100;
+  const { addedAssets, deletedAssetIds, graphId } = gfx.update(demos[selectedDemo](inputValue, selectedDemo));
+  assetStore.transaction(addedAssets, deletedAssetIds, graphId);
+});
+
+const { addedAssets, deletedAssetIds, graphId } = gfx.update(demos[selectedDemo](inputValue, selectedDemo));
+assetStore.transaction(addedAssets, deletedAssetIds, graphId);
+
+
+
+
+
+
+
