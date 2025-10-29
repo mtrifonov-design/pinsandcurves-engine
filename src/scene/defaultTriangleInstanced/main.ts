@@ -32,7 +32,7 @@ function defaultTriangleInstanced(input: number, selectedDemo:string) {
     scale: [input]
   }), [input, selectedDemo]);
 
-  const texture = Texture({
+  const outputTexture = Texture({
     width: 1920,
     height: 1080,
   }, [
@@ -60,7 +60,7 @@ function defaultTriangleInstanced(input: number, selectedDemo:string) {
     )
   ], [selectedDemo]);
   
-  return { triangle, texture, instances, uniforms };
+  return { triangle, outputTexture, instances, uniforms };
 }
 
 

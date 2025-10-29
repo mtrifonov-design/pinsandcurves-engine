@@ -6,15 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pinsandcurves-engine</title>
   </head>
-  <body style="display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
-    <canvas id="mainCanvas" width="800" height="600"></canvas>
+  <body style="display:flex; justify-content:center; align-items:center; height:100vh; width: 100vw; margin:0;">
+
     <input type="range" id="inputRange" min="0" max="100" value="50" style="position:absolute; top:20px; left:50%; transform:translateX(-50%); width:300px;">
     <select id="inputSelect" style="position:absolute; top:60px; left:50%; transform:translateX(-50%);">
+      <option value="helloWorld">Hello World</option>
       <option value="defaultTriangle" selected>Default Triangle</option>
       <option value="defaultTriangleInstanced" >Default Triangle Instanced</option>
       <option value="defaultTriangleInstancedUsedAsTexture">Default Triangle Instanced and Tiled</option>
       <option value="pinsAndCurves">Pins And Curves</option>
     </select>
+    <div style="width: 1220px; display: grid; grid-template-columns: 400px 20px 800px; grid-template-areas: 'graphing-container separator mainCanvas';">
+      <div id="graphing-container" style="grid-area: graphing-container; width: 400px; height: 100%; overflow: hidden; border:1px solid gray;display:flex;align-items: center;">
+      </div>
+      <canvas id="mainCanvas" width="800" height="600" style="width:800px;height:600px;grid-area: mainCanvas;"></canvas>
+    </div>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

@@ -15,7 +15,7 @@ function defaultTriangle(input: number, selectedDemo:string) {
     scale: [input]
   }), [input,selectedDemo]);
 
-  const texture = Texture({
+  const outputTexture = Texture({
     width: 1920,
     height: 1080,
   }, [
@@ -40,7 +40,7 @@ function defaultTriangle(input: number, selectedDemo:string) {
         }
     )
   ], [selectedDemo]);
-  return { triangle, texture, uniforms };
+  return { triangle, outputTexture, uniforms };
 }
 
 

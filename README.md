@@ -66,9 +66,14 @@ function defaultTriangle(height: number) {
     );
     return { triangle, outputTexture };
 }
-
 gfx.update(defaultTriangle(1));
 ```
+
+![A graph depicting the triangle example](/public/helloWorldExample.png)
+
+Now that you get the gist, here's a slightly more involved example:
+
+![A graph depicting the triangle example](/public/slightlymoreinvolved.png)
 
 ## Features
 

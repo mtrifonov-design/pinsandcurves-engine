@@ -15,7 +15,7 @@ function defaultTriangleInstancedUsedAsTexture(input: number, selectedDemo:strin
         ],
         [selectedDemo]
     )
-    const texture = Texture({
+    const outputTexture = Texture({
         width: 1920,
         height: 1080,
     }, [
@@ -41,7 +41,7 @@ function defaultTriangleInstancedUsedAsTexture(input: number, selectedDemo:strin
             {
                 textures: {
                     src: {
-                        texture: dti.texture,
+                        texture: dti.outputTexture,
                         sampler: {
                             wrap: 'clamp-to-edge',
                             filter: 'linear',
@@ -55,7 +55,7 @@ function defaultTriangleInstancedUsedAsTexture(input: number, selectedDemo:strin
 
     return {
         quad,
-        texture,
+        outputTexture,
         dti
     };
 
