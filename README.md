@@ -32,9 +32,9 @@ function defaultTriangle(height: number) {
         {
             triangleCount: 1,
             vertices: () => ([
-                { pos: [-1,0],      uv: [0,0] },
+                { pos: [-1,-1],      uv: [0,0] },
                 { pos: [0,height],  uv: [0,1] },
-                { pos: [1,0],       uv: [1,0] }
+                { pos: [1,-1],       uv: [1,0] }
             ]),
             indices: () => ([0, 1, 2,])
         }, 
