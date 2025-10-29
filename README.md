@@ -16,7 +16,7 @@ It sits halfway between WebGL and high-level creative coding frameworks, keeping
 
 > This project is in its very early stages of development.
 > It started as the render engine behind [**Pins and Curves**](https://pinsandcurves.app), a motion design editor.
-> I'd love for it to evolve into a shared open-source effort (which probably will entail finding a new name).
+> I'd love for it to evolve into a shared open-source effort (likely under a new name).
 > If you'd like to get involved during this formative period, please contact me at [martin@pinsandcurves.app](mailto:martin@pinsandcurves.app)
 
 ## Example: Default Triangle
