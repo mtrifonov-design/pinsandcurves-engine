@@ -69,11 +69,12 @@ function defaultTriangle(height: number) {
 gfx.update(defaultTriangle(1));
 ```
 
+The above code produces the following output: 
 ![A graph depicting the triangle example](/public/helloWorldExample.png)
 
 Now that you get the gist, here's a slightly more involved example:
 
-![A graph depicting the triangle example](/public/slightlymoreinvolved.png)
+![A graph depicting a more involved setup](/public/slightlymoreinvolved.png)
 
 ## Features
 
