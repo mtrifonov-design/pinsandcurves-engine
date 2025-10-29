@@ -69,12 +69,8 @@ function defaultTriangle(height: number) {
 gfx.update(defaultTriangle(1));
 ```
 
-The above code produces the following output: 
+The above code produces the following output (RenderGraph to the left, the actual rendered image to the right): 
 ![A graph depicting the triangle example](/public/helloWorldExample.png)
-
-Now that you get the gist, here's a slightly more involved example:
-
-![A graph depicting a more involved setup](/public/slightlymoreinvolved.png)
 
 ## Features
 
@@ -97,6 +93,11 @@ Now that you get the gist, here's a slightly more involved example:
 
 - **Multiple Backends (planned)**\
     Currently, only WebGL2 is supported. I plan to support WebGPU in the future.
+
+## A slightly more involved example
+
+Now that you get the gist, here's the RenderGraph and output of a slightly more involved example.
+![A graph depicting a more involved setup](/public/slightlymoreinvolved.png)
 
 ## License
 
