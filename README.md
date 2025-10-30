@@ -1,13 +1,13 @@
 # Pins and Curves Engine
 
-*A graphics framework for learning and prototyping GPU pipelines.*
+*A 2D graphics framework for learning and prototyping GPU pipelines.*
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-early%20prototype-orange.svg)]()
 
 
 ## Overview
-Pins and Curves engine is an open-source graphics framework that **removes friction** from GPU programming while preserving its mental model.
+Pins and Curves engine is an open-source 2D graphics framework that **removes friction** from GPU programming while preserving its mental model.
 
 It sits halfway between WebGL and high-level creative coding frameworks, keeping GPU concepts visible (passes, resources, dependencies) whilst automating the tedious setup.
 
