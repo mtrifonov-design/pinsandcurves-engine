@@ -1,3 +1,4 @@
+import './style.css';
 import Drawing from './lib/RenderLayer/Drawing.ts'
 import GPUBackend from './lib/RenderLayer/GPUBackend/gpuBackend.ts'
 import AssetStore from './AssetStore.ts'
