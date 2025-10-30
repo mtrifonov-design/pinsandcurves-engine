@@ -35,7 +35,6 @@ function defaultTriangleInstancedUsedAsTexture(input: number, selectedDemo:strin
                 vec2 localUv = fract(uv * gridSize);
                 vec4 texColor = texture(src, localUv);
                 outColor = texColor;
-                //outColor = vec4(localUv, 1.0,1.0);
             }
             `,
             {

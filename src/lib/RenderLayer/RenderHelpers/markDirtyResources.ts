@@ -1,4 +1,4 @@
-import type { InputTexture, Instances, Texture, Uniforms, Vertices, VirtualResourceGraph } from "../../Types/VirtualResources";
+import type { VirtualResourceGraph } from "../../Types/VirtualResources";
 import type { DirtyResourceMap } from "./types";
 import getDependents from "./getDependents";
 import derivePhysicalResourceId from "./derivePhysicalResourceId";
@@ -8,7 +8,8 @@ function recursivelyPropagateDirtiness(resourceId: string, graph: VirtualResourc
         const dependents = getDependents(resId, graph);
         for (const dep of dependents) {
             if (!dirtyResources[dep]) {
-                dirtyResources[dep] = true;
+                const physicalResId = derivePhysicalResourceId(dep, graph[dep].signature);
+                dirtyResources[physicalResId] = true;
                 markDependentsDirtyRecursively(dep);
             }
         }
@@ -29,8 +30,7 @@ function markDirtyResources(oldGraph : VirtualResourceGraph, newGraph : VirtualR
         let isDirty = false;
         const oldResource = oldGraph[resourceId];
         if (!oldResource) {
-            dirtyResources[derivedResourceId] = true;
-            continue;
+            isDirty = true;
         }
         const newResource = newGraph[resourceId];
         if (JSON.stringify(oldResource) !== JSON.stringify(newResource)) {

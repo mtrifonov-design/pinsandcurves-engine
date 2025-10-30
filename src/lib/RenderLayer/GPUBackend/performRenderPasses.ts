@@ -25,15 +25,14 @@ function performRenderPasses(
     .filter(resId => ["rotating-texture","texture"].includes(assets[graphId][resId].signature.type))
     .filter((resId => {
         // filter only resources that are either dirty or are not resident in the physical resource map
-        const dirty = drm[resId] !== undefined;
         const signature = assets[graphId][resId].signature;
         const physicalId = derivePhysicalResourceId(resId, signature);
         const resident = prm.namedResources[physicalId] !== undefined;
+        const dirty = drm[physicalId] !== undefined;
         return dirty || !resident;
     }))
     .map(resId => [resId, assets[graphId][resId]]);
     
-
     const textureLifetimeMap = computeTextureLifetimes(renderPassSeq);
 
     let renderPassIdx = 0;
@@ -49,7 +48,8 @@ function performRenderPasses(
         );
         renderPassIdx++;
         // after performing the render pass, we can clear the dirty flag for this resource
-        if (drm[resId]) delete drm[resId];
+        const physicalResourceId = derivePhysicalResourceId(resId, res.signature);
+        if (drm[physicalResourceId]) delete drm[physicalResourceId];
     }
     return [drm, prm];
 }
