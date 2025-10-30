@@ -96,7 +96,10 @@ The above code produces the following output (RenderGraph to the left, the actua
 
 ## Playground
 
-See some examples [here](https://mtrifonov-design.github.io/pinsandcurves-engine)
+Play with some examples [here](https://mtrifonov-design.github.io/pinsandcurves-engine):
+
+![screen recording of playground](public/demo.gif)
+
 
 
 ## License
