@@ -94,10 +94,10 @@ The above code produces the following output (RenderGraph to the left, the actua
 - **Multiple Backends (planned)**\
     Currently, only WebGL2 is supported. I plan to support WebGPU in the future.
 
-## A slightly more involved example
+## Playground
 
-Now that you get the gist, here's the RenderGraph and output of a slightly more involved example.
-![A graph depicting a more involved setup](/public/slightlymoreinvolved.png)
+See some examples [here](mtrifonov-design.github.io/pinsandcurves-engine)
+
 
 ## License
 
