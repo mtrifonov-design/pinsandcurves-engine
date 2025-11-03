@@ -8,6 +8,7 @@ import defaultTriangleInstanced from './demos/defaultTriangleInstanced/main.ts'
 import defaultTriangleInstancedUsedAsTexture from './demos/defaultTriangleInstancedUsedAsTexture/main.ts'
 import drawGraph from './drawGraph.ts'
 import helloWorld from './demos/helloWorld/main.ts'
+import gradient from './demos/gradient/main.ts'
 import type { VirtualResourceGraph } from './lib/Types/VirtualResources/index.ts'
 
 // Asset Store is a mock class simulating a database or state management system that we can subscribe to for changes.
@@ -39,6 +40,7 @@ const demos : { [key: string]: (input: number, selectedDemo:string) => any } = {
   defaultTriangle,
   defaultTriangleInstanced,
   defaultTriangleInstancedUsedAsTexture,
+  gradient
 }
 
 function updateDrawing(inputValue: number, selectedDemo:string) {
