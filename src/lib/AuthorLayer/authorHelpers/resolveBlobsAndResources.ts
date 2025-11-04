@@ -196,7 +196,7 @@ function resolveBlobsAndResources(
             const inputTexture_stableId = preResourceId + `/input-texture`;
             const inputTexture = preResource.value as InputTexture;
             if (needsUpdate) {
-                const inputTextureData = inputTexture.textureData;
+                const inputTextureData = inputTexture.inputTextureData;
                 if (inputTextureData.stage !== 'author') {
                     throw new Error("Expected author stage for input texture data");
                 }

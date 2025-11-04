@@ -7,9 +7,11 @@ const MAX_PARTICLES = 1000;
 
 function main({
     vertices,
+    input,
     colorParticles,
 } : {
     vertices: ReturnType<typeof Vertices>;
+    input: number;
     colorParticles: { r: number; g: number; b: number}[];
 }) {
     const colorsTexture = Texture({
@@ -17,7 +19,7 @@ function main({
         height: 1,
     }, () => {
         const data = [];
-        for (let i = 0; i < (MAX_PARTICLES / 4); i++) {
+        for (let i = 0; i < MAX_PARTICLES; i++) {
             const color = colorParticles[i] || { r: 0, g: 0, b: 0 };
             data.push(color.r * 255);
             data.push(color.g * 255);
@@ -29,16 +31,18 @@ function main({
 
     const uniforms = Uniforms({
         numParticles: 'int',
+        slider: 'float',
     }, () => {
         return {
             numParticles: colorParticles.length,
+            slider: [input],
         }
-    }, [colorParticles.length]);
+    }, [colorParticles.length, input]);
 
     const draw = DrawOp(
         vertices,
-        vert,
-        frag,
+        () => vert,
+        () => frag,
         {
             uniforms: {
                 uniforms,
@@ -54,7 +58,13 @@ function main({
             }
         }
     )
-    return { draw }
+    return { 
+        colorsTexture,
+        uniforms,
+        data: {
+            draw,
+        }
+    }
 }
 
 export default main;

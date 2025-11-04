@@ -12,6 +12,12 @@ function main(input: number, selectedDemo:string) {
   ], [selectedDemo]);
   const gradientRenderer = GradientRenderer({
     vertices: fullscreenQuad,
+    input,
+    colorParticles: [
+      { r: 1, g: 0, b: 0 },
+      { r: 0, g: 1, b: 0 },
+      { r: 0, g: 0, b: 1 },
+    ]
   });
   const drawFigure = "figure";
   const drawCircles = "circles";
@@ -19,7 +25,7 @@ function main(input: number, selectedDemo:string) {
     width: 1920,
     height: 1080,
   }, [
-    gradientRenderer.draw,
+    gradientRenderer.data.draw,
     // drawFigure,
     // drawCircles,
   ], [selectedDemo]);
