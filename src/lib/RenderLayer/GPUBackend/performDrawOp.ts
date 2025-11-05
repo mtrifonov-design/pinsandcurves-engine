@@ -21,6 +21,21 @@ function performDrawOp(
 ) {
 
     const gl = gpuBackend.gl;
+
+    // console.log(drawOp)
+    // if (drawOp.depthTest !== true) {
+    //     gl.enable(gl.BLEND);
+    //     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    //     // set premultiplied alpha blending
+    //     // gl.blendFuncSeparate(gl.ONE, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    //     // gl.disable(gl.DEPTH_TEST);
+    // } else {
+    //     console.log("DEPTH TEST ENABLED");
+    //     gl.disable(gl.BLEND);
+    //     gl.enable(gl.DEPTH_TEST);
+    // }
+    gl.enable(gl.DEPTH_TEST);
+
     const vertices = graph[drawOp.vertices.resource as string] as Vertices;
     const instanced = drawOp.instances !== undefined;
     const instances = instanced ? graph[drawOp.instances!.resource as string] as Instances : undefined;

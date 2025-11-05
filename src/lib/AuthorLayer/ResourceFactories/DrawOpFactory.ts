@@ -13,6 +13,9 @@ function DrawOpFactory(
             sampler?: any
         } },
         instances?: PreResource
+    }, 
+    options?: {
+        depthTest?: boolean,
     }
 ) {
     const att = {
@@ -54,6 +57,9 @@ function DrawOpFactory(
             stage: 'author',
             resource: att.instances
         }
+    }
+    if (options?.depthTest !== undefined) {
+        val.depthTest = options.depthTest;
     }
     return val;
 }

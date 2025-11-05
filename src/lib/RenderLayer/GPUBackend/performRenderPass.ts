@@ -39,12 +39,13 @@ function performRenderPass(
     gl.bindFramebuffer(gl.FRAMEBUFFER, trPhysicalResource.framebuffer);
     gl.clearColor(0, 0, 0, 1);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.depthFunc(gl.LEQUAL);
     
     const floatFormats = ["r32f","r16f", "rgba32f", "rgba16f"];
     if (floatFormats.includes(trSignature.format)) {
         gl.disable(gl.BLEND);
         gl.disable(gl.DEPTH_TEST);
-    }
+    } 
 
     let drawOpIdx = 0;
     for (const drawOp of tr.drawOps) {

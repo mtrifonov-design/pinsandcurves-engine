@@ -53,7 +53,9 @@ class TextureProvider {
     dispose() {
         if (this.framebuffer) {
             this.gl.deleteFramebuffer(this.framebuffer);
+            this.gl.deleteRenderbuffer(this.depthRenderbuffer);
             this.framebuffer = null;
+            this.depthRenderbuffer = null;
         }
         if (this.texture) {
             this.gl.deleteTexture(this.texture);
@@ -63,6 +65,7 @@ class TextureProvider {
 
     framebuffer: WebGLFramebuffer | null = null;
     texture: WebGLTexture | null = null;
+    depthRenderbuffer: WebGLRenderbuffer | null = null;
     setup() {
         const { internalFormat, format, type } = getUploadInfo(this.description.type, this.gl);
         //console.log(internalFormat, format, type)
@@ -76,6 +79,14 @@ class TextureProvider {
             if (!this.framebuffer) {
                 throw new Error('Failed to create framebuffer');
             }
+            this.depthRenderbuffer = this.gl.createRenderbuffer();
+            this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.depthRenderbuffer);
+            this.gl.renderbufferStorage(
+                this.gl.RENDERBUFFER,
+                this.gl.DEPTH_COMPONENT16,
+                this.description.shape[0],
+                this.description.shape[1]
+            );
             this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.framebuffer);
             this.gl.framebufferTexture2D(
                 this.gl.FRAMEBUFFER,
@@ -84,11 +95,18 @@ class TextureProvider {
                 this.texture,
                 0
             );
+            this.gl.framebufferRenderbuffer(
+                this.gl.FRAMEBUFFER,
+                this.gl.DEPTH_ATTACHMENT,
+                this.gl.RENDERBUFFER,
+                this.depthRenderbuffer
+            );
             const status = this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER);
             if (status !== this.gl.FRAMEBUFFER_COMPLETE) {
                 throw new Error(`Framebuffer is not complete: ${status}`);
             }
             this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+            this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, null);
         }
 
         this.gl.bindTexture(this.gl.TEXTURE_2D, null);

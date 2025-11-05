@@ -1,11 +1,14 @@
 #define FBM_OCTAVES 1
+#include "../shared/constants.glsl";
 #include "../../utils/lygia/generative/fbm.glsl";
 #include "../../utils/lygia/generative/cnoise.glsl";
+#include "../shared/lissajous.glsl";
+
 
 in vec2 v_uv;
 flat in int v_numParticles;
 
-#define PI 3.14159265359
+
 
 const float THRESHOLD = 0.0001;
 
@@ -13,27 +16,7 @@ vec4 fetch(int index) {
   return texelFetch(colors, ivec2(index, 0),0);
 }
 
-vec3 lissajous(
-    float t,
-    float angle,
-    float a,
-    float b,
-    float c,
-    float a_delta,
-    float b_delta,
-    float c_delta
-) {
-    float x = cos(a * t + a_delta);
-    float y = cos(b * t + b_delta);
-    float z = cos(c * t + c_delta);
-    mat3 rotAroundY = mat3(
-        cos(angle * 2. * PI), 0., sin(angle * 2. * PI),
-        0., 1., 0.,
-        -sin(angle * 2. * PI), 0., cos(angle * 2. * PI)
-    );
-    vec3 rotated = rotAroundY * vec3(x, y, z);
-    return rotated; // * vec3(0.5,0.5,1.);
-}
+
 
 float weightFunction(float distance, float factor) {
     //float factor = 0.5;
@@ -84,7 +67,8 @@ vec4 getColor(vec3 p, float t) {
     bool needsNormalization = true;
     for (int i = 0; i < PCOUNT; ++i) {
         vec3 center = lissajous(
-            fract((float(i) / float(PCOUNT))) * 6.2831, t,
+            fract((float(i) / float(PCOUNT))) * 6.2831, 
+            t,
             1.,2.,1.,
             0.6, 0.4, 1.0
         );
@@ -126,6 +110,18 @@ float hemisphere(vec2 uv) {
     return 1. - sqrt(dot(uv, uv)) * .5;
 }
 
+vec3 parametricToSphere(vec2 uv) {
+    float scaleFactor = 2.0;
+    float theta = uv.x *  PI * scaleFactor * .25; // azimuthal angle
+    float phi = uv.y * PI * scaleFactor * .5;         // polar angle
+
+    float x = sin(phi) * cos(theta);
+    float y = sin(phi) * sin(theta);
+    float z = cos(phi);
+
+    return vec3(x,y,z);
+}
+
 void main() {
     vec2 uv = v_uv;
     //vec4 col = getColor(vec3(uv, depthMap(uv + fbm(uv) * 0.2,slider)), slider);
@@ -146,9 +142,11 @@ void main() {
     //depth = pow(zNoise * 0.5 + 0.5,30.) * 2. - 1.;
     //depth += zNoise * .5;
     vec3 samplePos = vec3(uv, depth);
+    vec3 sphereSamplePos = parametricToSphere(uv);
     //samplePos += vec3(pnoise(uv + vec2(slider,0.), vec2(1.,1.)));
-    vec4 col = getColor(samplePos, slider);
+    vec4 col = getColor(sphereSamplePos, slider);
     outColor = col;
-
+    //outColor = texture(colors, v_uv);
+    //outColor = vec4(sphereSamplePos, 1.);
     //outColor = vec4(vec3(depth), 1.0);
 }

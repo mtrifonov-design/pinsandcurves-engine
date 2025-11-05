@@ -3,7 +3,7 @@ import { Vertices } from "../../../lib/AuthorLayer";
 import vert from './vert.glsl';
 import frag from './frag.glsl';
 
-const MAX_PARTICLES = 1000;
+const MAX_PARTICLES = 100;
 
 function main({
     vertices,
@@ -12,7 +12,7 @@ function main({
 } : {
     vertices: ReturnType<typeof Vertices>;
     input: number;
-    colorParticles: { r: number; g: number; b: number}[];
+    colorParticles: { r: number; g: number; b: number, pos: number }[];
 }) {
     const colorsTexture = Texture({
         width: MAX_PARTICLES,
@@ -20,21 +20,21 @@ function main({
     }, () => {
         const data = [];
         for (let i = 0; i < MAX_PARTICLES; i++) {
-            const color = colorParticles[i] || { r: 0, g: 0, b: 0 };
-            data.push(color.r * 255);
-            data.push(color.g * 255);
-            data.push(color.b * 255);
-            data.push(255);
+            const cp = colorParticles[i] || { r: 0, g: 0, b: 0, pos: 0 };
+            data.push(cp.r * 255, cp.g * 255, cp.b * 255, 255);
         }
+        console.log(data);
         return data;
     }, [JSON.stringify(colorParticles)]);
 
     const uniforms = Uniforms({
         numParticles: 'int',
+        numMaxParticles: 'int',
         slider: 'float',
     }, () => {
         return {
             numParticles: colorParticles.length,
+            numMaxParticles: MAX_PARTICLES,
             slider: [input],
         }
     }, [colorParticles.length, input]);
