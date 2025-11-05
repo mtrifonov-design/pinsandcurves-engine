@@ -12,7 +12,7 @@ function main({
 } : {
     vertices: ReturnType<typeof Vertices>;
     input: number;
-    colorParticles: { r: number; g: number; b: number, pos: number }[];
+    colorParticles: { r: number; g: number; b: number }[];
 }) {
     const colorsTexture = Texture({
         width: MAX_PARTICLES,
@@ -23,11 +23,13 @@ function main({
             const cp = colorParticles[i] || { r: 0, g: 0, b: 0, pos: 0 };
             data.push(cp.r * 255, cp.g * 255, cp.b * 255, 255);
         }
-        console.log(data);
         return data;
     }, [JSON.stringify(colorParticles)]);
 
     const uniforms = Uniforms({
+        lissajous_a: 'vec2',
+        lissajous_b: 'vec2',
+        lissajous_c: 'vec2',
         numParticles: 'int',
         numMaxParticles: 'int',
         slider: 'float',
@@ -36,6 +38,18 @@ function main({
             numParticles: colorParticles.length,
             numMaxParticles: MAX_PARTICLES,
             slider: [input],
+            lissajous_a: [1, 0.6],
+            lissajous_b: [1, 0.4],
+            lissajous_c: [1, 1.0],
+            // lissajous_a: [1, 0.6],
+            // lissajous_b: [2, 0.4],
+            // lissajous_c: [1, 1.0],
+            // lissajous_a: [5, 0.4],
+            // lissajous_b: [3, 0.4],
+            // lissajous_c: [1, 0.2],
+            // lissajous_a: [1, 0.6],
+            // lissajous_b: [3, 1.0],
+            // lissajous_c: [1, 0.2],
         }
     }, [colorParticles.length, input]);
 

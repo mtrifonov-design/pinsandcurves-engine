@@ -40,8 +40,8 @@ float getDepth(vec2 p, float t) {
     for (int i = 0; i < PCOUNT; ++i) {
         vec3 center = lissajous(
             fract((float(i) / float(PCOUNT))) * 6.2831, t,
-            1.,2.,1.,
-            0.6, 0.4, 1.0
+            lissajous_a.x,lissajous_b.x,lissajous_c.x,
+            lissajous_a.y, lissajous_b.y, lissajous_c.y
         );
         float zStretch = 3.;
         float xyStretch = 1.0;
@@ -67,13 +67,13 @@ vec4 getColor(vec3 p, float t) {
     bool needsNormalization = true;
     for (int i = 0; i < PCOUNT; ++i) {
         vec3 center = lissajous(
-            fract((float(i) / float(PCOUNT))) * 6.2831, 
-            t,
-            1.,2.,1.,
-            0.6, 0.4, 1.0
+            fract(((float(i) + 0.5) / float(PCOUNT)) + t) * 6.2831,
+            0.,
+            lissajous_a.x,lissajous_b.x,lissajous_c.x,
+            lissajous_a.y, lissajous_b.y, lissajous_c.y
         );
-        vec3 p_adj = p * vec3(1.,1.,2.5);
-        vec3 center_adj = center * vec3(1.,1.,2.5);
+        vec3 p_adj = p * vec3(1.,1.,.5);
+        vec3 center_adj = center * vec3(1.,1.,.5);
         float distance = sqrt(dot(p_adj - center_adj, p_adj - center_adj));
         vec4 color = fetch(i);
         if (distance < THRESHOLD) {
@@ -111,9 +111,8 @@ float hemisphere(vec2 uv) {
 }
 
 vec3 parametricToSphere(vec2 uv) {
-    float scaleFactor = 2.0;
-    float theta = uv.x *  PI * scaleFactor * .25; // azimuthal angle
-    float phi = uv.y * PI * scaleFactor * .5;         // polar angle
+    float theta = uv.x * 0.5 *  PI; // azimuthal angle
+    float phi = uv.y * 0.5 * PI + PI;         // polar angle
 
     float x = sin(phi) * cos(theta);
     float y = sin(phi) * sin(theta);
@@ -135,17 +134,19 @@ void main() {
     //depthSamplePos *= sin(uv.x * PI * 2. * 50.);
     float depth = 0.; 
     depth = getDepth(depthSamplePos, slider);
-    vec2 noiseDistortion = vec2(xNoise, yNoise) * 0.25;
+    vec2 noiseDistortion = vec2(xNoise, yNoise);
     noiseDistortion = vec2(0.);
     depth = hemisphere(uv + noiseDistortion );
     //depth = 1.0;
     //depth = pow(zNoise * 0.5 + 0.5,30.) * 2. - 1.;
     //depth += zNoise * .5;
     vec3 samplePos = vec3(uv, depth);
-    vec3 sphereSamplePos = parametricToSphere(uv);
+    vec3 sphereSamplePos = parametricToSphere(uv+ noiseDistortion);
     //samplePos += vec3(pnoise(uv + vec2(slider,0.), vec2(1.,1.)));
+    //vec4 col = getColor(vec3(uv,-1.), slider);
     vec4 col = getColor(sphereSamplePos, slider);
     outColor = col;
+    //outColor = vec4(vec3(sphereSamplePos.z * 0.5 + 0.5), 1.0);
     //outColor = texture(colors, v_uv);
     //outColor = vec4(sphereSamplePos, 1.);
     //outColor = vec4(vec3(depth), 1.0);

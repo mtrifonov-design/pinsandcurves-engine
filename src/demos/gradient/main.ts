@@ -25,9 +25,9 @@ function main(input: number, selectedDemo:string) {
       // { r: 0, g: 0, b: 0.3 },
       // { r: 0.1, g: 0.9, b: 0.9 },
 
-      { r: 1, g: 0, b: 0, pos: 0 },
-      { r: 0, g: 1, b: 0, pos: 0.7 },
-      { r: 0, g: 0, b: 1, pos: 0.9 },
+      { r: 1, g: 0, b: 0 },
+      { r: 0, g: 1, b: 0 },
+      // { r: 0, g: 0, b: 1 },
 
       // { r: 1, g: 1, b: 0 },
       // { r: 0, g: 1, b: 0 },

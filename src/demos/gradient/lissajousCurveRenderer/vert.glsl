@@ -21,20 +21,23 @@ void main() {
     float endColorPosIdx = floor(endPos * float(numParticles));
     startColor = fetch(int(startColorPosIdx));
     endColor = fetch(int(endColorPosIdx));
+    startPos += slider;
+    endPos += slider;
+    startPos = fract(startPos);
+    endPos = fract(endPos);
     vec3 startPoint = lissajous(
         startPos * 2. * PI,
-        slider,
-        1.,2.,1.,
-        0.6, 0.4, 1.0
+        0.,
+            lissajous_a.x,lissajous_b.x,lissajous_c.x,
+            lissajous_a.y, lissajous_b.y, lissajous_c.y
     );
-    startPoint.z *= -1.;
     vec3 endPoint = lissajous(
         endPos * 2. * PI,
-        slider,
-        1.,2.,1.,
-        0.6, 0.4, 1.0
+        0.,
+            lissajous_a.x,lissajous_b.x,lissajous_c.x,
+            lissajous_a.y, lissajous_b.y, lissajous_c.y
     );
-    endPoint.z *= -1.;
+
     startColor.rgb = mix(startColor.rgb, vec3(0.), (startPoint.z * 2.) * 0.5 + 0.5);
     endColor.rgb = mix(endColor.rgb, vec3(0.), (endPoint.z * 2.) * 0.5 + 0.5);
     vec3 translation = startPoint.xyz;
