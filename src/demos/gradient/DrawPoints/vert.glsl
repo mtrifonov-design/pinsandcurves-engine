@@ -1,13 +1,9 @@
 #include "../shared/constants.glsl";
 #include "../shared/lissajous.glsl";
 
-const int LINE_SEGMENTS = 1000;
-
 vec4 fetch(int index) {
   return texelFetch(colors, ivec2(index, 0),0);
 }
-
-
 
 out vec2 v_uv;
 out vec4 col;
@@ -18,7 +14,7 @@ void main() {
     float pos = (float(selfInstanceId) + 0.5) / float(numParticles);
     vec4 color = fetch(int(selfInstanceId));
     col = color;
-    pos += slider;
+    pos += time;
     pos = fract(pos);
     
     vec3 point = lissajous(

@@ -12,6 +12,7 @@ function resolveDependencies(flattenedPrg: FlattenedPreResourceGraph) {
         preResource.setId(id);
     }
     for (const preResource of Object.values(flattenedPrg)) {
+
         const preResourceType = preResource.value.signature.type;
         if (preResourceType === "texture" || preResourceType === "rotating-texture") {
             const drawOps = (preResource.value as Texture | RotatingTexture).drawOps;

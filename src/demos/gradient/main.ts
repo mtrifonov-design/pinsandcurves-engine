@@ -1,11 +1,11 @@
 import { DrawOp, Instances, Texture, Uniforms } from "../../lib/AuthorLayer";
 import Quad from "../utils/quad";
-import GradientRenderer from './gradientRenderer/main.ts';
-import lissajousCurveRenderer from "./lissajousCurveRenderer/main.ts";
-import lissajousPointsRenderer from "./lissajousPointsRenderer/main.ts";
+import DrawGradient from './DrawGradient/main.ts';
+import DrawLissajousCurve from "./DrawLissajousCurve/main.ts";
+import DrawPoints from "./DrawPoints/main.ts";
+import sharedInputs from "./sharedInputs/main.ts";
 
-
-type Props = {
+type GradientRendererProps = {
   colors: { r: number; g: number; b: number }[];
   time: number;
   lissajousParams: {
@@ -18,7 +18,7 @@ type Props = {
   }
 }
 
-const defaultProps: Props = {
+const defaultProps: GradientRendererProps = {
   colors: [
     // { r: 0.7, g: 0, b: 0 },
     // { r: 1, g: 0.5, b: 0.1 },
@@ -62,57 +62,48 @@ const defaultProps: Props = {
 
 
 
-function main(props: Props) {
-  const fullscreenQuad = Quad([
-    { x: -1, y: -1, u: 0, v: 0 },
-    { x: 1, y: -1, u: 1, v: 0 },
-    { x: 1, y: 1, u: 1, v: 1 },
-    { x: -1, y: 1, u: 0, v: 1 },
-  ], []);
-  const displayUniforms = Uniforms({
-    resolution: 'vec2',
-  }, () => ({
-    resolution: [props.general.canvasDimensions[0], props.general.canvasDimensions[1]],
-  }), [props.general.canvasDimensions[0],props.general.canvasDimensions[1]]);
-  const gradientRenderer = GradientRenderer({
-    vertices: fullscreenQuad,
-    time: props.time,
-    colorParticles: props.colors,
-    displayUniforms,
-    lissajousParams: props.lissajousParams,
+function main(props: GradientRendererProps) {
+
+
+  const shared_inputs = sharedInputs(props);
+
+
+  const drawGradient = DrawGradient({
+    vertices: shared_inputs.quad,
+    colorsTexture: shared_inputs.colors_texture,
+    displayUniforms: shared_inputs.display_uniforms,
+    lissajousUniforms: shared_inputs.lissajous_uniforms,
   });
 
-  const curve = lissajousCurveRenderer({
-    quad: fullscreenQuad,
-    time: props.time,
-    colorsTexture: gradientRenderer.colorsTexture,
-    colorUniforms: gradientRenderer.uniforms,
-    displayUniforms,
+  const drawLissajousCurve = DrawLissajousCurve({
+    props,
+    quad: shared_inputs.quad,
+    lissajousUniforms: shared_inputs.lissajous_uniforms,
+    displayUniforms: shared_inputs.display_uniforms,
   })
-  const points = lissajousPointsRenderer({
-    quad: fullscreenQuad,
-    time: props.time,
+  const drawPoints = DrawPoints({
+    props,
+    quad: shared_inputs.quad,
     numberOfColors: props.colors.length,
-    colorsTexture: gradientRenderer.colorsTexture,
-    colorUniforms: gradientRenderer.uniforms,
-    displayUniforms,
+    colorsTexture: shared_inputs.colors_texture,
+    lissajousUniforms: shared_inputs.lissajous_uniforms,
+    displayUniforms: shared_inputs.display_uniforms,
   })
 
   const outputTexture = Texture({
     width: props.general.canvasDimensions[0],
     height: props.general.canvasDimensions[1],
   }, [
-    gradientRenderer.data.draw,
-    curve.data.draw,
-    points.data.draw,
+    drawGradient.data.draw,
+    drawLissajousCurve.data.draw,
+    drawPoints.data.draw,
   ], [props.general.canvasDimensions[0], props.general.canvasDimensions[1]]);
   return {
-    fullscreenQuad,
-    gradientRenderer,
     outputTexture,
-    curve,
-    points,
-    displayUniforms,
+    shared_inputs,
+    drawGradient,
+    drawLissajousCurve,
+    drawPoints,
   }
 }
 
@@ -122,5 +113,7 @@ function main2(input: number, selectedDemo: string) {
   const scene = main(props);
   return scene;
 }
+
+export type { GradientRendererProps };
 
 export default main2;

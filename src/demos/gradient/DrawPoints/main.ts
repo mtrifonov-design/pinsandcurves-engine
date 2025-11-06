@@ -2,26 +2,27 @@ import type { Vertices } from "../../../lib/AuthorLayer";
 import { DrawOp, Instances, Texture, Uniforms } from "../../../lib/AuthorLayer";
 import vert from './vert.glsl';
 import frag from './frag.glsl';
+import type { GradientRendererProps } from "../main";
 
 
 const MAX_PARTICLES = 500;
 
 function lissajousPointsRenderer({
+    props,
     quad,
-    time,
     numberOfColors,
     colorsTexture,
-    colorUniforms,
+    lissajousUniforms,
     displayUniforms,
 } : {
+    props: GradientRendererProps;
     quad: ReturnType<typeof Vertices>;
-    time: number;
     numberOfColors: number;
     colorsTexture: ReturnType<typeof Texture>;
-    colorUniforms: ReturnType<typeof Uniforms>;
+    lissajousUniforms: ReturnType<typeof Uniforms>;
     displayUniforms: ReturnType<typeof Uniforms>;
 }) {
-
+    
     const pointInstances = Instances({
         maxInstanceCount: MAX_PARTICLES,
         attributes: {
@@ -43,8 +44,7 @@ function lissajousPointsRenderer({
         () => frag,
         {
             uniforms: {
-                //curveUniforms,
-                colorUniforms,
+                lissajousUniforms,
                 displayUniforms,
             },
             instances: pointInstances,

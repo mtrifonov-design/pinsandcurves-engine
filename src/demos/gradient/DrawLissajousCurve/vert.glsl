@@ -1,16 +1,7 @@
 #include "../shared/constants.glsl";
 #include "../shared/lissajous.glsl";
 
-
-
-vec4 fetch(int index) {
-  return texelFetch(colors, ivec2(index, 0),0);
-}
-
-
-
 out vec2 v_uv;
-out vec4 color;
 out float depth;
 out float actualDepth;
 void main() {
@@ -18,10 +9,6 @@ void main() {
     int selfInstanceId = gl_InstanceID;
     float startPos = float(selfInstanceId) / float(numLineSegments);
     float endPos = float(selfInstanceId + 1) / float(numLineSegments);
-    float colorPosIdx = floor(startPos * float(numParticles));
-    color = fetch(int(colorPosIdx));
-    // startPos += slider;
-    // endPos += slider;
     startPos = fract(startPos);
     endPos = fract(endPos);
     vec3 startPoint = lissajous(

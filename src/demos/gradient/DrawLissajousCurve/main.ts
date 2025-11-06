@@ -2,20 +2,19 @@ import type { Vertices } from "../../../lib/AuthorLayer";
 import { DrawOp, Instances, Texture, Uniforms } from "../../../lib/AuthorLayer";
 import vert from './vert.glsl';
 import frag from './frag.glsl';
+import type { GradientRendererProps } from "../main";
 
 const LINE_SEGMENTS_COUNT = 1000;
 
 function lissajousCurveRenderer({
+    props,
     quad,
-    time,
-    colorsTexture,
-    colorUniforms,
+    lissajousUniforms,
     displayUniforms,
 } : {
+    props: GradientRendererProps;
     quad: ReturnType<typeof Vertices>;
-    time: number;
-    colorsTexture: ReturnType<typeof Texture>;
-    colorUniforms: ReturnType<typeof Uniforms>;
+    lissajousUniforms: ReturnType<typeof Uniforms>;
     displayUniforms: ReturnType<typeof Uniforms>;
 }) {
 
@@ -41,7 +40,7 @@ function lissajousCurveRenderer({
         return {
             numLineSegments: LINE_SEGMENTS_COUNT,
         }
-    }, [time]);
+    }, [props.time]);
 
     const draw = DrawOp(
         quad,
@@ -50,19 +49,10 @@ function lissajousCurveRenderer({
         {
             uniforms: {
                 curveUniforms,
-                colorUniforms,
+                lissajousUniforms,
                 displayUniforms,
             },
             instances: lineSegmentInstances,
-            textures: {
-                colors: {
-                    texture: colorsTexture,
-                    sampler: {
-                        filter: "nearest",
-                        wrap: "edge",
-                    }
-                }
-            }
         },
         {
             depthTest: true,
