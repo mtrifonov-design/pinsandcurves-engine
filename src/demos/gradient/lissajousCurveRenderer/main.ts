@@ -3,7 +3,7 @@ import { DrawOp, Instances, Texture, Uniforms } from "../../../lib/AuthorLayer";
 import vert from './vert.glsl';
 import frag from './frag.glsl';
 
-const LINE_SEGMENTS_COUNT = 2500;
+const LINE_SEGMENTS_COUNT = 1000;
 
 function lissajousCurveRenderer({
     quad,
@@ -66,6 +66,7 @@ function lissajousCurveRenderer({
         },
         {
             depthTest: true,
+            blendMode: "alpha",
         }
     )
 

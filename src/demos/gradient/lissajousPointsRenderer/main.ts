@@ -4,7 +4,7 @@ import vert from './vert.glsl';
 import frag from './frag.glsl';
 
 
-const MAX_PARTICLES = 100;
+const MAX_PARTICLES = 500;
 
 function lissajousPointsRenderer({
     quad,
@@ -71,6 +71,7 @@ function lissajousPointsRenderer({
         },
         {
             depthTest: true,
+            blendMode: "alpha",
         }
     )
 

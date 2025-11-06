@@ -11,6 +11,7 @@ vec4 fetch(int index) {
 
 out vec2 v_uv;
 out vec4 col;
+out float depth;
 void main() {
     v_uv = position * 0.5 + 0.5; 
     int selfInstanceId = gl_InstanceID;
@@ -19,6 +20,7 @@ void main() {
     col = color;
     pos += slider;
     pos = fract(pos);
+    
     vec3 point = lissajous(
         pos * 2. * PI,
         0.,
@@ -27,6 +29,10 @@ void main() {
         resolution
     );
     float aspect = resolution.x / resolution.y;
-    vec3 finalPoint = vec3(position* vec2(0.03) * vec2(1.,aspect), 0.)  + point;
+    vec3 finalPoint = vec3(position* vec2(0.025) * vec2(1.,aspect), 0.)  + point;
+        depth = smoothstep(-0.4,0.4,finalPoint.z);
+    finalPoint.z -= 0.15;
+
+    // finalPoint.z *= 2.;
     gl_Position = vec4(finalPoint, 1.0);
 }

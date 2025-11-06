@@ -30,9 +30,14 @@ function performDrawOp(
         gl.enable(gl.DEPTH_TEST);
     }
     if (drawOp.blendMode !== undefined) {
-        console.log("blending")
-        gl.enable(gl.BLEND);
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        if (drawOp.blendMode === "additive") {
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+        }
+        if (drawOp.blendMode === "alpha") {
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+        }
     }
 
     const vertices = graph[drawOp.vertices.resource as string] as Vertices;

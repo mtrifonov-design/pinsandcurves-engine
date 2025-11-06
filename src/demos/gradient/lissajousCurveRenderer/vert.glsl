@@ -12,6 +12,7 @@ vec4 fetch(int index) {
 out vec2 v_uv;
 out vec4 color;
 out float depth;
+out float actualDepth;
 void main() {
     v_uv = position * 0.5 + 0.5; 
     int selfInstanceId = gl_InstanceID;
@@ -19,8 +20,8 @@ void main() {
     float endPos = float(selfInstanceId + 1) / float(numLineSegments);
     float colorPosIdx = floor(startPos * float(numParticles));
     color = fetch(int(colorPosIdx));
-    startPos += slider;
-    endPos += slider;
+    // startPos += slider;
+    // endPos += slider;
     startPos = fract(startPos);
     endPos = fract(endPos);
     vec3 startPoint = lissajous(
@@ -38,6 +39,7 @@ void main() {
         resolution
     );
     depth = smoothstep(-0.4,0.4,(startPoint.z + endPoint.z) * 0.5);
+    actualDepth = (startPoint.z + endPoint.z) * 0.5;
     vec3 translation = startPoint.xyz;
     vec2 diff = endPoint.xy - startPoint.xy;
     float angle = atan(diff.y, diff.x);

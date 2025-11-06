@@ -73,6 +73,9 @@ function main({
                     }
                 },
             }
+        },
+        {
+            blendMode: "alpha"
         }
     )
     return { 
