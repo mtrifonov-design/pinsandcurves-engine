@@ -7,13 +7,13 @@ const LINE_SEGMENTS_COUNT = 1000;
 
 function lissajousCurveRenderer({
     quad,
-    input,
+    time,
     colorsTexture,
     colorUniforms,
     displayUniforms,
 } : {
     quad: ReturnType<typeof Vertices>;
-    input: number;
+    time: number;
     colorsTexture: ReturnType<typeof Texture>;
     colorUniforms: ReturnType<typeof Uniforms>;
     displayUniforms: ReturnType<typeof Uniforms>;
@@ -41,7 +41,7 @@ function lissajousCurveRenderer({
         return {
             numLineSegments: LINE_SEGMENTS_COUNT,
         }
-    }, [input]);
+    }, [time]);
 
     const draw = DrawOp(
         quad,

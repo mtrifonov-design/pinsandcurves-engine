@@ -8,14 +8,14 @@ const MAX_PARTICLES = 500;
 
 function lissajousPointsRenderer({
     quad,
-    input,
+    time,
     numberOfColors,
     colorsTexture,
     colorUniforms,
     displayUniforms,
 } : {
     quad: ReturnType<typeof Vertices>;
-    input: number;
+    time: number;
     numberOfColors: number;
     colorsTexture: ReturnType<typeof Texture>;
     colorUniforms: ReturnType<typeof Uniforms>;
@@ -37,17 +37,6 @@ function lissajousPointsRenderer({
             return data;
         }
     }, []); 
-
-    // const curveUniforms = Uniforms({
-    //     show: 'int',
-    //     slider: 'float',
-    // }, () => {
-    //     return {
-    //         show: 1,
-    //         slider: input,
-    //     }
-    // }, [input]);
-
     const draw = DrawOp(
         quad,
         () => vert,
@@ -77,7 +66,6 @@ function lissajousPointsRenderer({
 
     return {
         pointInstances,
-        //curveUniforms,
         data: {
             draw,
         }

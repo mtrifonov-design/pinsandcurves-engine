@@ -7,14 +7,20 @@ const MAX_PARTICLES = 100;
 
 function main({
     vertices,
-    input,
+    time,
     colorParticles,
     displayUniforms,
+    lissajousParams,
 } : {
     vertices: ReturnType<typeof Vertices>;
-    input: number;
+    time: number;
     colorParticles: { r: number; g: number; b: number }[];
     displayUniforms: ReturnType<typeof Uniforms>;
+    lissajousParams: {
+        a: [number, number];
+        b: [number, number];
+        c: [number, number];
+    };
 }) {
     const colorsTexture = Texture({
         width: MAX_PARTICLES,
@@ -39,13 +45,13 @@ function main({
         return {
             numParticles: colorParticles.length,
             numMaxParticles: MAX_PARTICLES,
-            slider: [input],
+            slider: [time],
             // lissajous_a: [1, 0.6],
             // lissajous_b: [1, 0.4],
             // lissajous_c: [1, 1.0],
-            lissajous_a: [1, 0.6],
-            lissajous_b: [2, 0.4],
-            lissajous_c: [1, 1.0],
+            lissajous_a: lissajousParams.a,
+            lissajous_b: lissajousParams.b,
+            lissajous_c: lissajousParams.c,
             // lissajous_a: [5, 0.4],
             // lissajous_b: [3, 0.4],
             // lissajous_c: [1, 0.2],
@@ -53,7 +59,7 @@ function main({
             // lissajous_b: [3, 1.0],
             // lissajous_c: [1, 0.2],
         }
-    }, [colorParticles.length, input]);
+    }, [colorParticles.length, time, lissajousParams.a, lissajousParams.b, lissajousParams.c]);
 
     const draw = DrawOp(
         vertices,
