@@ -1,0 +1,32 @@
+#include "../shared/constants.glsl";
+#include "../shared/lissajous.glsl";
+
+const int LINE_SEGMENTS = 1000;
+
+vec4 fetch(int index) {
+  return texelFetch(colors, ivec2(index, 0),0);
+}
+
+
+
+out vec2 v_uv;
+out vec4 col;
+void main() {
+    v_uv = position * 0.5 + 0.5; 
+    int selfInstanceId = gl_InstanceID;
+    float pos = (float(selfInstanceId) + 0.5) / float(numParticles);
+    vec4 color = fetch(int(selfInstanceId));
+    col = color;
+    pos += slider;
+    pos = fract(pos);
+    vec3 point = lissajous(
+        pos * 2. * PI,
+        0.,
+        lissajous_a.x,lissajous_b.x,lissajous_c.x,
+        lissajous_a.y, lissajous_b.y, lissajous_c.y,
+        resolution
+    );
+    float aspect = resolution.x / resolution.y;
+    vec3 finalPoint = vec3(position* vec2(0.03) * vec2(1.,aspect), 0.)  + point;
+    gl_Position = vec4(finalPoint, 1.0);
+}

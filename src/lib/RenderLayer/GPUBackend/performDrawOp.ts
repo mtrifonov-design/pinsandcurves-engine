@@ -25,18 +25,15 @@ function performDrawOp(
     // console.log(drawOp)
     gl.disable(gl.BLEND);
     gl.disable(gl.DEPTH_TEST);
-    if (drawOp.depthTest !== true) {
-        gl.enable(gl.BLEND);
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-        // set premultiplied alpha blending
-        // gl.blendFuncSeparate(gl.ONE, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        // gl.disable(gl.DEPTH_TEST);
-    } else {
-        console.log("DEPTH TEST ENABLED");
+    if (drawOp.depthTest === true) {
         gl.disable(gl.BLEND);
         gl.enable(gl.DEPTH_TEST);
     }
-
+    if (drawOp.blendMode !== undefined) {
+        console.log("blending")
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    }
 
     const vertices = graph[drawOp.vertices.resource as string] as Vertices;
     const instanced = drawOp.instances !== undefined;

@@ -23,42 +23,42 @@ float weightFunction(float distance, float factor) {
     return 1. / pow((distance), 1.5 + factor * 3.);
 }
 
-float getDepth(vec2 p, float t) {
-    int PCOUNT = v_numParticles; 
-    float accumulatedDepth = 0.0;
-    float closestParticle = 1.0;
-    // for (int i = 0; i < PCOUNT; ++i) {
-    //     vec3 center = lissajous(
-    //         fract((float(i) / float(PCOUNT)) + t) * 6.2831,
-    //         1.,2.,1.,
-    //         0.6, 0.4, 1.0
-    //     );
-    //     if (center.z > closestParticle) {
-    //         closestParticle = center.z;
-    //     }
-    // }
-    for (int i = 0; i < PCOUNT; ++i) {
-        vec3 center = lissajous(
-            fract((float(i) / float(PCOUNT))) * 6.2831, t,
-            lissajous_a.x,lissajous_b.x,lissajous_c.x,
-            lissajous_a.y, lissajous_b.y, lissajous_c.y
-        );
-        float zStretch = 3.;
-        float xyStretch = 1.0;
-        vec3 p_adj = vec3(p,closestParticle) * vec3(xyStretch,xyStretch,zStretch);
-        vec3 center_adj = center * vec3(xyStretch,xyStretch,zStretch);
-        float distance = sqrt(dot(p_adj - center_adj, p_adj - center_adj));
-        if (distance < THRESHOLD) {
-            float infinity = 1.0 / 0.0;
-            accumulatedDepth = infinity;
-            break;
-        } else {
-            float w = weightFunction(distance, 1.15);
-            accumulatedDepth += center.z * w;
-        }
-    }
-    return smoothstep(0.,1.,accumulatedDepth);
-}
+// float getDepth(vec2 p, float t) {
+//     int PCOUNT = v_numParticles; 
+//     float accumulatedDepth = 0.0;
+//     float closestParticle = 1.0;
+//     // for (int i = 0; i < PCOUNT; ++i) {
+//     //     vec3 center = lissajous(
+//     //         fract((float(i) / float(PCOUNT)) + t) * 6.2831,
+//     //         1.,2.,1.,
+//     //         0.6, 0.4, 1.0
+//     //     );
+//     //     if (center.z > closestParticle) {
+//     //         closestParticle = center.z;
+//     //     }
+//     // }
+//     for (int i = 0; i < PCOUNT; ++i) {
+//         vec3 center = lissajous(
+//             fract((float(i) / float(PCOUNT))) * 6.2831, t,
+//             lissajous_a.x,lissajous_b.x,lissajous_c.x,
+//             lissajous_a.y, lissajous_b.y, lissajous_c.y
+//         );
+//         float zStretch = 3.;
+//         float xyStretch = 1.0;
+//         vec3 p_adj = vec3(p,closestParticle) * vec3(xyStretch,xyStretch,zStretch);
+//         vec3 center_adj = center * vec3(xyStretch,xyStretch,zStretch);
+//         float distance = sqrt(dot(p_adj - center_adj, p_adj - center_adj));
+//         if (distance < THRESHOLD) {
+//             float infinity = 1.0 / 0.0;
+//             accumulatedDepth = infinity;
+//             break;
+//         } else {
+//             float w = weightFunction(distance, 1.15);
+//             accumulatedDepth += center.z * w;
+//         }
+//     }
+//     return smoothstep(0.,1.,accumulatedDepth);
+// }
 
 vec4 getColor(vec3 p, float t) {
     int PCOUNT = v_numParticles; 
@@ -70,7 +70,8 @@ vec4 getColor(vec3 p, float t) {
             fract(((float(i) + 0.5) / float(PCOUNT)) + t) * 6.2831,
             0.,
             lissajous_a.x,lissajous_b.x,lissajous_c.x,
-            lissajous_a.y, lissajous_b.y, lissajous_c.y
+            lissajous_a.y, lissajous_b.y, lissajous_c.y,
+            resolution
         );
         vec3 p_adj = p * vec3(1.,1.,.5);
         vec3 center_adj = center * vec3(1.,1.,.5);
@@ -81,7 +82,7 @@ vec4 getColor(vec3 p, float t) {
             needsNormalization = false; 
             break;
         } else {
-            float w = weightFunction(distance, 3.2);
+            float w = weightFunction(distance, 1.2);
             wTotal += w;
             accumulatedColor += color.rgb * w;
         }
@@ -111,14 +112,14 @@ float hemisphere(vec2 uv) {
 }
 
 vec3 parametricToSphere(vec2 uv) {
-    float theta = uv.x * 0.5 *  PI; // azimuthal angle
-    float phi = uv.y * 0.5 * PI + PI;         // polar angle
+    float theta = (uv.x * 0.5 + 0.5) *  PI; // azimuthal angle
+    float phi = (uv.y * 0.5 + 0.5) * PI;         // polar angle
 
     float x = sin(phi) * cos(theta);
     float y = sin(phi) * sin(theta);
     float z = cos(phi);
 
-    return vec3(x,y,z);
+    return vec3(-x,-z,-y);
 }
 
 void main() {
@@ -133,7 +134,7 @@ void main() {
     vec2 depthSamplePos = uv; //+ vec2(xNoise, yNoise) * 3.;
     //depthSamplePos *= sin(uv.x * PI * 2. * 50.);
     float depth = 0.; 
-    depth = getDepth(depthSamplePos, slider);
+    //depth = getDepth(depthSamplePos, slider);
     vec2 noiseDistortion = vec2(xNoise, yNoise);
     noiseDistortion = vec2(0.);
     depth = hemisphere(uv + noiseDistortion );

@@ -9,10 +9,12 @@ function main({
     vertices,
     input,
     colorParticles,
+    displayUniforms,
 } : {
     vertices: ReturnType<typeof Vertices>;
     input: number;
     colorParticles: { r: number; g: number; b: number }[];
+    displayUniforms: ReturnType<typeof Uniforms>;
 }) {
     const colorsTexture = Texture({
         width: MAX_PARTICLES,
@@ -38,12 +40,12 @@ function main({
             numParticles: colorParticles.length,
             numMaxParticles: MAX_PARTICLES,
             slider: [input],
-            lissajous_a: [1, 0.6],
-            lissajous_b: [1, 0.4],
-            lissajous_c: [1, 1.0],
             // lissajous_a: [1, 0.6],
-            // lissajous_b: [2, 0.4],
+            // lissajous_b: [1, 0.4],
             // lissajous_c: [1, 1.0],
+            lissajous_a: [1, 0.6],
+            lissajous_b: [2, 0.4],
+            lissajous_c: [1, 1.0],
             // lissajous_a: [5, 0.4],
             // lissajous_b: [3, 0.4],
             // lissajous_c: [1, 0.2],
@@ -60,6 +62,7 @@ function main({
         {
             uniforms: {
                 uniforms,
+                displayUniforms,
             },
             textures: {
                 colors: {

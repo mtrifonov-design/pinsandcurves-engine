@@ -37,7 +37,7 @@ function performRenderPass(
     
     gl.viewport(0, 0, trSignature.width, trSignature.height);
     gl.bindFramebuffer(gl.FRAMEBUFFER, trPhysicalResource.framebuffer);
-    gl.clearColor(0, 0, 0, 1);
+    gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.depthFunc(gl.LEQUAL);
     

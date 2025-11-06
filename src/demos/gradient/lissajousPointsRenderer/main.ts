@@ -3,45 +3,50 @@ import { DrawOp, Instances, Texture, Uniforms } from "../../../lib/AuthorLayer";
 import vert from './vert.glsl';
 import frag from './frag.glsl';
 
-const LINE_SEGMENTS_COUNT = 2500;
 
-function lissajousCurveRenderer({
+const MAX_PARTICLES = 100;
+
+function lissajousPointsRenderer({
     quad,
     input,
+    numberOfColors,
     colorsTexture,
     colorUniforms,
     displayUniforms,
 } : {
     quad: ReturnType<typeof Vertices>;
     input: number;
+    numberOfColors: number;
     colorsTexture: ReturnType<typeof Texture>;
     colorUniforms: ReturnType<typeof Uniforms>;
     displayUniforms: ReturnType<typeof Uniforms>;
 }) {
 
-    const lineSegmentInstances = Instances({
-        maxInstanceCount: LINE_SEGMENTS_COUNT,
+    const pointInstances = Instances({
+        maxInstanceCount: MAX_PARTICLES,
         attributes: {
             instanceId: "int",
         }
     }, {
-        count: LINE_SEGMENTS_COUNT,
+        count: numberOfColors,
         instances: () => {
             const data = [];
-            for (let i = 0; i < LINE_SEGMENTS_COUNT; i++) {
+            for (let i = 0; i < numberOfColors; i++) {
                 data.push({ instanceId : i });
             }
             return data;
         }
     }, []); 
 
-    const curveUniforms = Uniforms({
-        numLineSegments: 'int',
-    }, () => {
-        return {
-            numLineSegments: LINE_SEGMENTS_COUNT,
-        }
-    }, [input]);
+    // const curveUniforms = Uniforms({
+    //     show: 'int',
+    //     slider: 'float',
+    // }, () => {
+    //     return {
+    //         show: 1,
+    //         slider: input,
+    //     }
+    // }, [input]);
 
     const draw = DrawOp(
         quad,
@@ -49,11 +54,11 @@ function lissajousCurveRenderer({
         () => frag,
         {
             uniforms: {
-                curveUniforms,
+                //curveUniforms,
                 colorUniforms,
                 displayUniforms,
             },
-            instances: lineSegmentInstances,
+            instances: pointInstances,
             textures: {
                 colors: {
                     texture: colorsTexture,
@@ -70,12 +75,12 @@ function lissajousCurveRenderer({
     )
 
     return {
-        lineSegmentInstances,
-        curveUniforms,
+        pointInstances,
+        //curveUniforms,
         data: {
             draw,
         }
     };
 }
 
-export default lissajousCurveRenderer;
+export default lissajousPointsRenderer;

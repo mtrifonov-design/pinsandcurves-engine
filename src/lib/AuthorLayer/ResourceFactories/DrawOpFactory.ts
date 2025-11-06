@@ -16,6 +16,7 @@ function DrawOpFactory(
     }, 
     options?: {
         depthTest?: boolean,
+        blendMode?: 'alpha' | 'additive'
     }
 ) {
     const att = {
@@ -60,6 +61,9 @@ function DrawOpFactory(
     }
     if (options?.depthTest !== undefined) {
         val.depthTest = options.depthTest;
+    }
+    if (options?.blendMode !== undefined) {
+        val.blendMode = options.blendMode;
     }
     return val;
 }
