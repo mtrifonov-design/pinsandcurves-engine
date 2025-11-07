@@ -1,4 +1,4 @@
-import{V as v,T as d,D as l,aK as p,aL as g,aM as w,aN as m,aO as b}from"../index-C8bJRjxR.js";function f(e,t){const n=v({attributes:{pos:"vec2",uv:"vec2"}},{triangleCount:1,vertices:()=>[{pos:[-1,-1],uv:[0,0]},{pos:[0,e],uv:[0,1]},{pos:[1,-1],uv:[1,0]}],indices:()=>[0,1,2]},[e,t]),a=d({width:1920,height:1080},[l(n,()=>`
+import{V as v,T as d,D as l,aK as p,aL as g,aM as w,aN as m,aO as b}from"./index-C8bJRjxR.js";function f(e,t){const n=v({attributes:{pos:"vec2",uv:"vec2"}},{triangleCount:1,vertices:()=>[{pos:[-1,-1],uv:[0,0]},{pos:[0,e],uv:[0,1]},{pos:[1,-1],uv:[1,0]}],indices:()=>[0,1,2]},[e,t]),a=d({width:1920,height:1080},[l(n,()=>`
                 out vec2 v_uv;
                 void main() {
                     gl_Position = vec4(pos,0.,1.);
