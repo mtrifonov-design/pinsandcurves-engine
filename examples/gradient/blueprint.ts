@@ -108,7 +108,7 @@ function main(props: GradientRendererProps) {
 }
 
 
-function main2(input: number, selectedDemo: string) {
+function main2(input: number) {
   const props = { ...defaultProps, time: input };
   const scene = main(props);
   return scene;

@@ -2,12 +2,12 @@ import { DrawOp, Instances, Texture, Uniforms } from "../../lib/AuthorLayer";
 import Triangle from "../utils/triangle";
 
 
-function defaultTriangleInstanced(input: number, selectedDemo:string) {
+function defaultTriangleInstanced(input: number) {
   const triangle = Triangle([
     { x: -0.5, y: -0.5, u: 0, v: 0  },
     { x: 0.5, y: -0.5, u: 1, v: 0  },
     { x: 0.0, y: 0.5, u: 1, v: 1  },
-  ], [selectedDemo]);
+  ], []);
 
   const instances = Instances({
     attributes: {
@@ -23,14 +23,14 @@ function defaultTriangleInstanced(input: number, selectedDemo:string) {
         }
         return output;
       }
-    }, [selectedDemo]);
+    }, []);
 
 
   const uniforms = Uniforms({
     scale: 'float'
   }, () => ({
     scale: [input]
-  }), [input, selectedDemo]);
+  }), [input]);
 
   const outputTexture = Texture({
     width: 1920,
@@ -58,7 +58,7 @@ function defaultTriangleInstanced(input: number, selectedDemo:string) {
             instances: instances
         }
     )
-  ], [selectedDemo]);
+  ], []);
   
   return { triangle, outputTexture, instances, uniforms };
 }

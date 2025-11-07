@@ -3,9 +3,9 @@ import defaultTriangleInstanced from "../defaultTriangleInstanced/blueprint";
 import Quad from "../utils/quad";
 
 
-function defaultTriangleInstancedUsedAsTexture(input: number, selectedDemo:string) {
+function defaultTriangleInstancedUsedAsTexture(input: number) {
 
-    const dti = defaultTriangleInstanced(input, selectedDemo);
+    const dti = defaultTriangleInstanced(input);
     const quad = Quad(
         [
             { x: -1, y: -1, u: 0, v: 0 },
@@ -13,7 +13,7 @@ function defaultTriangleInstancedUsedAsTexture(input: number, selectedDemo:strin
             { x: 1, y: 1, u: 1, v: 1 },
             { x: 1, y: -1, u: 1, v: 0 },
         ],
-        [selectedDemo]
+        []
     )
     const outputTexture = Texture({
         width: 1920,
@@ -50,7 +50,7 @@ function defaultTriangleInstancedUsedAsTexture(input: number, selectedDemo:strin
             }
 
         )
-    ], [selectedDemo]);
+    ], []);
 
     return {
         quad,

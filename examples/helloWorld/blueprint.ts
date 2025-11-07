@@ -1,6 +1,6 @@
 import { DrawOp, Texture, Uniforms, Vertices } from "../../lib/AuthorLayer";
 
-function helloWorld(height: number, selectedDemo: string) {
+function helloWorld(height: number) {
     const triangle = Vertices(
         {
             attributes: {
@@ -17,7 +17,7 @@ function helloWorld(height: number, selectedDemo: string) {
             ]),
             indices: () => ([0, 1, 2,])
         }, 
-        [height,selectedDemo]
+        [height]
     );
     const outputTexture = Texture(
         {
@@ -41,7 +41,7 @@ function helloWorld(height: number, selectedDemo: string) {
                 }`
             )
         ], 
-        [selectedDemo]
+        []
     );
     return { triangle, outputTexture };
 }

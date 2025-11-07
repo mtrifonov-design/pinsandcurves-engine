@@ -2,18 +2,18 @@ import { DrawOp, Texture, Uniforms } from "../../lib/AuthorLayer";
 import Triangle from "../utils/triangle";
 
 
-function defaultTriangle(input: number, selectedDemo:string) {
+function defaultTriangle(input: number) {
   const triangle = Triangle([
     { x: -0.5, y: -0.5, u: 0, v: 0  },
     { x: 0.5, y: -0.5, u: 1, v: 0  },
     { x: 0.0, y: 0.5, u: 1, v: 1  },
-  ], [selectedDemo]);
+  ], []);
   
   const uniforms = Uniforms({
     scale: 'float'
   }, () => ({
     scale: [input]
-  }), [input,selectedDemo]);
+  }), [input]);
 
   const outputTexture = Texture({
     width: 1920,
@@ -39,7 +39,7 @@ function defaultTriangle(input: number, selectedDemo:string) {
             }
         }
     )
-  ], [selectedDemo]);
+  ], []);
   return { triangle, outputTexture, uniforms };
 }
 
