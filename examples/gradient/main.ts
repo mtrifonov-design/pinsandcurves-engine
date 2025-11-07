@@ -30,21 +30,33 @@ const unsubscribe = assetStore.subscribe((store, graphId) => {
 // Now we create a "blueprint" which is a high-level representation of our rendering graph.
 const gfx = new Blueprint();
 
-function updateDrawing(inputValue: number) {
+function updateDrawing(inputValue: number, updateGraph?: boolean) {
   const { addedAssets, deletedAssetIds, graphId } = gfx.update(blueprint(inputValue));
-  drawGraph(addedAssets[graphId] as VirtualResourceGraph); // updating the mermaid flow diagram
+  if (updateGraph) {
+    drawGraph(addedAssets[graphId] as VirtualResourceGraph); // updating the mermaid flow diagram
+  }
   assetStore.transaction(addedAssets, deletedAssetIds, graphId);
 }
 
 const inputRange = document.getElementById("inputRange") as HTMLInputElement;
 let inputValue = parseFloat(inputRange.value) / 100;
 
-inputRange.addEventListener("input", () => {
-  inputValue = parseFloat(inputRange.value) / 100;
-  updateDrawing(inputValue);
-});
+// inputRange.addEventListener("input", () => {
+//   inputValue = parseFloat(inputRange.value) / 100;
+//   updateDrawing(inputValue);
+// });
 
-updateDrawing(inputValue);
+let frame = 0;
+function loop() {
+  inputValue = (frame % 300) / 300;
+  updateDrawing(inputValue, frame === 0);
+  frame++;
+  requestAnimationFrame(loop);
+}
+
+loop();
+
+
 
 
 

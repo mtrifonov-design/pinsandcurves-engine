@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pinsandcurves-engine</title>
+</head>
+
+<body>
+  <div id="upper-container">
+    <a href="/pinsandcurves-engine/">back to examples</a>
+    <h1>Hello World</h1>
+
+
+  </div>
+
+    <h3>Inputs</h3>
+    <div id="input-container">
+      <label for="inputRange">Triangle Scale:</label>
+      <input type="range" id="inputRange" min="0" max="100" value="50">
+    </div>
+
+    <h3>Canvas</h3>
+    <div id="canvas-container">
+      <canvas id="mainCanvas" width="800" height="600" style="width:800px;height:600px;grid-area: mainCanvas;"></canvas>
+    </div>
+    <h3>Code & Render Graph</h3>
+    <div id="code-render-graph-container">
+
+
+    <div id="code-snippet-container">
+<!-- HTML generated using hilite.me --><div style="background: #263238; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #BB80B3">function</span><span style="color: #EFF"> defaultTriangleInstancedUsedAsTexture</span><span style="color: #89DDFF">(</span><span style="color: #EFF">input</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">number</span><span style="color: #89DDFF">)</span><span style="color: #EFF"> </span><span style="color: #89DDFF">{</span>
+
+<span style="color: #EFF">    </span><span style="color: #BB80B3">const</span><span style="color: #EFF"> dti </span><span style="color: #89DDFF">=</span><span style="color: #EFF"> defaultTriangleInstanced</span><span style="color: #89DDFF">(</span><span style="color: #EFF">input</span><span style="color: #89DDFF">);</span>
+<span style="color: #EFF">    </span><span style="color: #BB80B3">const</span><span style="color: #EFF"> quad </span><span style="color: #89DDFF">=</span><span style="color: #EFF"> Quad</span><span style="color: #89DDFF">(</span>
+<span style="color: #EFF">        </span><span style="color: #89DDFF">[</span>
+<span style="color: #EFF">            </span><span style="color: #89DDFF">{</span><span style="color: #EFF"> x</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #89DDFF">-</span><span style="color: #F78C6C">1</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> y</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #89DDFF">-</span><span style="color: #F78C6C">1</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> u</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">0</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> v</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">0</span><span style="color: #EFF"> </span><span style="color: #89DDFF">},</span>
+<span style="color: #EFF">            </span><span style="color: #89DDFF">{</span><span style="color: #EFF"> x</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #89DDFF">-</span><span style="color: #F78C6C">1</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> y</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">1</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> u</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">0</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> v</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">1</span><span style="color: #EFF"> </span><span style="color: #89DDFF">},</span>
+<span style="color: #EFF">            </span><span style="color: #89DDFF">{</span><span style="color: #EFF"> x</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">1</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> y</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">1</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> u</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">1</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> v</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">1</span><span style="color: #EFF"> </span><span style="color: #89DDFF">},</span>
+<span style="color: #EFF">            </span><span style="color: #89DDFF">{</span><span style="color: #EFF"> x</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">1</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> y</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #89DDFF">-</span><span style="color: #F78C6C">1</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> u</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">1</span><span style="color: #89DDFF">,</span><span style="color: #EFF"> v</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">0</span><span style="color: #EFF"> </span><span style="color: #89DDFF">},</span>
+<span style="color: #EFF">        </span><span style="color: #89DDFF">],</span>
+<span style="color: #EFF">        </span><span style="color: #89DDFF">[]</span>
+<span style="color: #EFF">    </span><span style="color: #89DDFF">)</span>
+<span style="color: #EFF">    </span><span style="color: #BB80B3">const</span><span style="color: #EFF"> outputTexture </span><span style="color: #89DDFF">=</span><span style="color: #EFF"> Texture</span><span style="color: #89DDFF">({</span>
+<span style="color: #EFF">        width</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">1920</span><span style="color: #89DDFF">,</span>
+<span style="color: #EFF">        height</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">1080</span><span style="color: #89DDFF">,</span>
+<span style="color: #EFF">    </span><span style="color: #89DDFF">},</span><span style="color: #EFF"> </span><span style="color: #89DDFF">[</span>
+<span style="color: #EFF">        DrawOp</span><span style="color: #89DDFF">(</span>
+<span style="color: #EFF">            quad</span><span style="color: #89DDFF">,</span>
+<span style="color: #EFF">            </span><span style="color: #89DDFF">()</span><span style="color: #EFF"> </span><span style="color: #89DDFF">=&gt;</span><span style="color: #C3E88D">`</span>
+<span style="color: #C3E88D">            out vec2 uv;</span>
+<span style="color: #C3E88D">            void main() {</span>
+<span style="color: #C3E88D">                gl_Position = position;</span>
+<span style="color: #C3E88D">                uv = vec2(u, v);</span>
+<span style="color: #C3E88D">            }</span>
+<span style="color: #C3E88D">            `</span><span style="color: #89DDFF">,</span>
+<span style="color: #EFF">            </span><span style="color: #89DDFF">()</span><span style="color: #EFF"> </span><span style="color: #89DDFF">=&gt;</span><span style="color: #EFF"> </span><span style="color: #C3E88D">`</span>
+<span style="color: #C3E88D">            in vec2 uv;</span>
+<span style="color: #C3E88D">            void main() {</span>
+<span style="color: #C3E88D">                float gridSize = 8.;</span>
+<span style="color: #C3E88D">                vec2 localUv = fract(uv * gridSize);</span>
+<span style="color: #C3E88D">                vec4 texColor = texture(src, localUv);</span>
+<span style="color: #C3E88D">                outColor = texColor;</span>
+<span style="color: #C3E88D">            }</span>
+<span style="color: #C3E88D">            `</span><span style="color: #89DDFF">,</span>
+<span style="color: #EFF">            </span><span style="color: #89DDFF">{</span>
+<span style="color: #EFF">                textures</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #89DDFF">{</span>
+<span style="color: #EFF">                    src</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #89DDFF">{</span>
+<span style="color: #EFF">                        texture</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #BB80B3">dti.outputTexture</span><span style="color: #89DDFF">,</span>
+<span style="color: #EFF">                        sampler</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #89DDFF">{</span>
+<span style="color: #EFF">                            wrap</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #C3E88D">&#39;clamp-to-edge&#39;</span><span style="color: #89DDFF">,</span>
+<span style="color: #EFF">                            filter</span><span style="color: #89DDFF">:</span><span style="color: #EFF"> </span><span style="color: #C3E88D">&#39;linear&#39;</span><span style="color: #89DDFF">,</span>
+<span style="color: #EFF">                        </span><span style="color: #89DDFF">}</span>
+<span style="color: #EFF">                    </span><span style="color: #89DDFF">}</span>
+<span style="color: #EFF">                </span><span style="color: #89DDFF">}</span>
+<span style="color: #EFF">            </span><span style="color: #89DDFF">}</span>
+
+<span style="color: #EFF">        </span><span style="color: #89DDFF">)</span>
+<span style="color: #EFF">    </span><span style="color: #89DDFF">],</span><span style="color: #EFF"> </span><span style="color: #89DDFF">[]);</span>
+
+<span style="color: #EFF">    </span><span style="color: #BB80B3">return</span><span style="color: #EFF"> </span><span style="color: #89DDFF">{</span>
+<span style="color: #EFF">        quad</span><span style="color: #89DDFF">,</span>
+<span style="color: #EFF">        outputTexture</span><span style="color: #89DDFF">,</span>
+<span style="color: #EFF">        dti</span>
+<span style="color: #EFF">    </span><span style="color: #89DDFF">};</span>
+
+
+<span style="color: #89DDFF">}</span>
+</pre></div>
+
+
+    </div>
+              <div id="render-graph-container">
+      <div id="graphing-container"></div>
+    </div>
+    </div>
+
+
+
+  <script type="module" src="/examples/texture-example/main.ts"></script>
+</body>
+
+</html>

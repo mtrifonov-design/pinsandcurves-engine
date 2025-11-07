@@ -13,22 +13,29 @@
     <a href="/pinsandcurves-engine/">back to examples</a>
     <h1>Hello World</h1>
 
-    <div>
+
+  </div>
+
+    <h3>Inputs</h3>
+    <div id="input-container">
+      <label for="inputRange">Time:</label>
       <input type="range" id="inputRange" min="0" max="100" value="50">
     </div>
-  </div>
 
-  <div id="main-container">
-    <div id="render-graph-container">
-      <label for="graphing-container">RenderGraph:</label><br />
-      <div id="graphing-container"></div>
-    </div>
-    <div>
-      <label for="mainCanvas">Main Canvas:</label><br />
+    <h3>Canvas</h3>
+    <div id="canvas-container">
       <canvas id="mainCanvas" width="800" height="600" style="width:800px;height:600px;grid-area: mainCanvas;"></canvas>
     </div>
+    <h3>Render Graph</h3>
+    <div id="code-render-graph-container">
 
-  </div>
+
+              <div id="render-graph-container">
+      <div id="graphing-container"></div>
+    </div>
+    </div>
+
+
 
   <script type="module" src="/examples/gradient/main.ts"></script>
 </body>

@@ -13,10 +13,10 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        helloWorld: resolve(__dirname, 'examples/helloWorld/index.html'),
-        defaultTriangle: resolve(__dirname, 'examples/defaultTriangle/index.html'),
-        defaultTriangleInstanced: resolve(__dirname, 'examples/defaultTriangleInstanced/index.html'),
-        defaultTriangleInstancedUsedAsTexture: resolve(__dirname, 'examples/defaultTriangleInstancedUsedAsTexture/index.html'),
+        helloWorld: resolve(__dirname, 'examples/hello-world/index.html'),
+        uniforms: resolve(__dirname, 'examples/uniforms-example/index.html'),
+        instancing: resolve(__dirname, 'examples/instancing-example/index.html'),
+        texture: resolve(__dirname, 'examples/texture-example/index.html'),
         gradient: resolve(__dirname, 'examples/gradient/index.html'),
       },
     },
