@@ -41,20 +41,20 @@ function updateDrawing(inputValue: number, updateGraph?: boolean) {
 const inputRange = document.getElementById("inputRange") as HTMLInputElement;
 let inputValue = parseFloat(inputRange.value) / 100;
 
-// inputRange.addEventListener("input", () => {
-//   inputValue = parseFloat(inputRange.value) / 100;
-//   updateDrawing(inputValue);
-// });
+inputRange.addEventListener("input", () => {
+  inputValue = parseFloat(inputRange.value) / 100;
+  updateDrawing(inputValue);
+});
 
 let frame = 0;
 function loop() {
   inputValue = (frame % 300) / 300;
   updateDrawing(inputValue, frame === 0);
-  frame++;
+  frame+= 0.5;
   requestAnimationFrame(loop);
 }
 
-loop();
+//loop();
 
 
 

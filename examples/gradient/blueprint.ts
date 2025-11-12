@@ -1,9 +1,9 @@
 import { DrawOp, Instances, Texture, Uniforms } from "../../lib/AuthorLayer/index.ts";
-import Quad from "../utils/quad.ts";
 import DrawGradient from './DrawGradient/main.ts';
 import DrawLissajousCurve from "./DrawLissajousCurve/main.ts";
 import DrawPoints from "./DrawPoints/main.ts";
 import sharedInputs from "./sharedInputs/main.ts";
+import SampleDepthTexture from "./SampleDepthTexture/main.ts";
 
 type GradientRendererProps = {
   colors: { r: number; g: number; b: number }[];
@@ -33,9 +33,14 @@ const defaultProps: GradientRendererProps = {
     // { r: 0, g: 1, b: 0 },
     // { r: 0, g: 0, b: 1 },
 
-    { r: 1, g: 1, b: 0 },
-    { r: 0, g: 1, b: 1 },
-    { r: 1, g: 0, b: 1 },
+    // { r: 1, g: 1, b: 0 },
+    // { r: 0, g: 1, b: 1 },
+    // { r: 1, g: 0, b: 1 },
+
+    { r: Math.pow(24/255,1.5), g: Math.pow(0,1.5), b: Math.pow(97/255,1.5) },
+    { r: Math.pow(79/255,1.5), g: Math.pow(23/255,1.5), b: Math.pow(135/255,1.5) },
+    { r: Math.pow(235/255,1.5), g: Math.pow(52/255,1.5), b: Math.pow(120/255,1.5) },
+    { r: Math.pow(235/255,1.5), g: Math.pow(119/255,1.5), b: Math.pow(60/255,1.5) },
   ],
   time: 0,
   lissajousParams: {
@@ -67,12 +72,20 @@ function main(props: GradientRendererProps) {
 
   const shared_inputs = sharedInputs(props);
 
+  const sampleDepthTex = SampleDepthTexture({
+    props,
+    vertices: shared_inputs.quad,
+    displayUniforms: shared_inputs.display_uniforms,
+    lissajousUniforms: shared_inputs.lissajous_uniforms,
+  });
+
 
   const drawGradient = DrawGradient({
     vertices: shared_inputs.quad,
     colorsTexture: shared_inputs.colors_texture,
     displayUniforms: shared_inputs.display_uniforms,
     lissajousUniforms: shared_inputs.lissajous_uniforms,
+    depthSampleTex: sampleDepthTex.texture,
   });
 
   const drawLissajousCurve = DrawLissajousCurve({
@@ -99,11 +112,15 @@ function main(props: GradientRendererProps) {
     drawPoints.data.draw,
   ], [props.general.canvasDimensions[0], props.general.canvasDimensions[1]]);
   return {
-    outputTexture,
+    //outputTexture,
     shared_inputs,
     drawGradient,
     drawLissajousCurve,
     drawPoints,
+    sampleDepthTex,
+    outputTexture,
+    
+    //outputTexture: sampleDepthTex.texture,
   }
 }
 

@@ -2,17 +2,16 @@ import { DrawOp, Texture, Uniforms } from "../../../lib/AuthorLayer";
 import { Vertices } from "../../../lib/AuthorLayer";
 import vert from './vert.glsl';
 import frag from './frag.glsl';
+import type { GradientRendererProps } from "../blueprint";
 
 function main({
+    props,
     vertices,
-    colorsTexture,
-    depthSampleTex,
     lissajousUniforms,
     displayUniforms,
 } : {
+    props: GradientRendererProps;
     vertices: ReturnType<typeof Vertices>;
-    colorsTexture: ReturnType<typeof Texture>;
-    depthSampleTex: ReturnType<typeof Texture>;
     lissajousUniforms: ReturnType<typeof Uniforms>;
     displayUniforms: ReturnType<typeof Uniforms>;
 }) {
@@ -26,29 +25,18 @@ function main({
                 displayUniforms,
             },
             textures: {
-
-                colors: {
-                    texture: colorsTexture,
-                    sampler: {
-                        filter: 'nearest',
-                        wrap: 'clamp',
-                    }
-                },
-                depth_src: {
-                    texture: depthSampleTex,
-                    sampler: {
-                        filter: 'nearest',
-                        wrap: 'clamp',
-                    }
-                },
-
             }
         },
         {
             blendMode: "alpha"
         }
     )
+    const texture = Texture({
+        width: props.general.canvasDimensions[0],
+        height: props.general.canvasDimensions[1], 
+    }, [draw], [props.general.canvasDimensions[0]]);
     return { 
+        texture,
         data: {
             draw,
         }

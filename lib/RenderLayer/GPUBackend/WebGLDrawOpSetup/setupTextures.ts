@@ -66,6 +66,9 @@ function setupTexture(
     const ptid_g = prm.namedResources[ptid].gpuResource;
     const texProvider = gpuBackend.getResource(ptid_g) as TextureProvider;
 
+    // bind program 
+    gl.useProgram(programProvider.program);
+
     const location = gl.getUniformLocation(programProvider.program,bindingName);
     if (location === null) throw new Error ("Something went wrong")
     gl.activeTexture(gl.TEXTURE0+slot);
