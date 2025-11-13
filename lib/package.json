@@ -1,0 +1,18 @@
+{
+  "name": "pinsandcurves-engine",
+  "version": "0.0.0",
+  "type": "module",
+  "files": ["dist"],
+  "main": "./dist/pinsandcurves-engine.umd.cjs",
+  "module": "./dist/pinsandcurves-engine.js",
+  "exports": {
+    ".": {
+      "import": "./dist/pinsandcurves-engine.js",
+      "require": "./dist/pinsandcurves-engine.umd.cjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mtrifonov-design/pinsandcurves-engine.git"
+  }
+}

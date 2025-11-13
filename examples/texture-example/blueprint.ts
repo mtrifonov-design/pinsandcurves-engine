@@ -1,4 +1,4 @@
-import { DrawOp, Texture } from "../../lib/AuthorLayer";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from "../../lib/src";
 import defaultTriangleInstanced from "../instancing-example/blueprint";
 import Quad from "../utils/quad";
 

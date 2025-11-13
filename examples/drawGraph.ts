@@ -1,6 +1,6 @@
 import mermaid from "mermaid";
-import getDependencies from "../lib/RenderLayer/RenderHelpers/getDependencies";
-import type { VirtualResourceGraph } from "../lib/Types/VirtualResources";
+import { getDependencies } from "../lib/src";
+import type { VirtualResourceGraph } from "../lib/src";
 
 const graphingContainer = document.getElementById("graphing-container");
 mermaid.initialize({ startOnLoad: false });

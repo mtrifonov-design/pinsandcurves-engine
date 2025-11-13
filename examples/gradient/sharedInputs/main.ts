@@ -1,5 +1,5 @@
 import type { GradientRendererProps } from "../blueprint";
-import { Uniforms, Texture } from "../../../lib/AuthorLayer";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from "../../../lib/src";
 import Quad from "../../utils/quad";
 
 const MAX_PARTICLES = 100;

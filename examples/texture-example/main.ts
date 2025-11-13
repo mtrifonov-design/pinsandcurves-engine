@@ -1,11 +1,9 @@
 import './style.css';
-import Drawing from '../../lib/RenderLayer/Drawing.ts'
-import GPUBackend from '../../lib/RenderLayer/GPUBackend/gpuBackend.ts'
 import AssetStore from '../AssetStore.ts'
-import Blueprint from '../../lib/AuthorLayer/Blueprint.ts'
 import drawGraph from '../drawGraph.ts'
 import blueprint from './blueprint.ts'
-import type { VirtualResourceGraph } from '../../lib/Types/VirtualResources/index.ts'
+import { Drawing, GPUBackend, Blueprint } from '../../lib/src';
+import type { VirtualResourceGraph } from '../../lib/src';
 
 // Asset Store is a mock class simulating a database or state management system that we can subscribe to for changes.
 const assetStore = new AssetStore();

@@ -1,4 +1,4 @@
-import { DrawOp, Instances, Texture, Uniforms } from "../../lib/AuthorLayer/index.ts";
+import { DrawOp, Instances, Texture, Uniforms } from "../../lib/src";
 import DrawGradient from './DrawGradient/main.ts';
 import DrawLissajousCurve from "./DrawLissajousCurve/main.ts";
 import DrawPoints from "./DrawPoints/main.ts";

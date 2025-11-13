@@ -1,4 +1,4 @@
-import { DrawOp, Texture, Uniforms, Vertices } from "../../lib/AuthorLayer";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from "../../lib/src";
 
 function helloWorld(height: number) {
     const triangle = Vertices(

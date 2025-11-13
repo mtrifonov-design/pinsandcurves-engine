@@ -1,5 +1,4 @@
-import { DrawOp, Texture, Uniforms } from "../../../lib/AuthorLayer";
-import { Vertices } from "../../../lib/AuthorLayer";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from "../../../lib/src";
 import vert from './vert.glsl';
 import frag from './frag.glsl';
 import type { GradientRendererProps } from "../blueprint";

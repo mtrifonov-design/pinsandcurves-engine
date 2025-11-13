@@ -1,5 +1,6 @@
-import type { Vertices } from "../../../lib/AuthorLayer";
-import { DrawOp, Instances, Texture, Uniforms } from "../../../lib/AuthorLayer";
+import type { ResourceTypes } from "../../../lib/src";
+type Vertices = ResourceTypes.Vertices;
+import { DrawOp, Instances, Texture, Uniforms } from "../../../lib/src";
 import vert from './vert.glsl';
 import frag from './frag.glsl';
 import type { GradientRendererProps } from "../blueprint";

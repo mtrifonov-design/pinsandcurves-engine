@@ -1,5 +1,4 @@
-
-import { Vertices } from "../../lib/AuthorLayer";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from "../../lib/src";
 
 function Quad(
     vertices: { x: number, y: number, [key: string]: any }[],

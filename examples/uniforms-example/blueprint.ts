@@ -1,4 +1,4 @@
-import { DrawOp, Instances, Texture, Uniforms } from "../../lib/AuthorLayer";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from "../../lib/src";
 import Triangle from "../utils/triangle";
 
 
