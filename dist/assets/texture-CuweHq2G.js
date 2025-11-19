@@ -1,0 +1,15 @@
+import{I as d,A as l,aK as v,aL as p,aM as g,aN as m,aO as x}from"./drawGraph-BDbP87ZH.js";import{d as f}from"./blueprint-Dcry_OGZ.js";import{Q as w}from"./quad-DP6llhdf.js";import"./triangle-D3SAbadk.js";function b(a){const e=f(a),t=w([{x:-1,y:-1,u:0,v:0},{x:-1,y:1,u:0,v:1},{x:1,y:1,u:1,v:1},{x:1,y:-1,u:1,v:0}],[]),n=d({width:1920,height:1080},[l(t,()=>`
+            out vec2 uv;
+            void main() {
+                gl_Position = vec4(position, 0.0, 1.0);
+                uv = vec2(u, v);
+            }
+            `,()=>`
+            in vec2 uv;
+            void main() {
+                float gridSize = 8.;
+                vec2 localUv = fract(uv * gridSize);
+                vec4 texColor = texture(src, localUv);
+                outColor = texColor;
+            }
+            `,{textures:{src:{texture:e.outputTexture,sampler:{wrap:"clamp-to-edge",filter:"linear"}}}})],[]);return{quad:t,outputTexture:n,dti:e}}const i=new v,I=document.getElementById("mainCanvas"),u=I.getContext("webgl2",{antialias:!1});if(!u)throw new Error("Unable to initialize WebGL2");const y=new g(u),r=new p(y);i.subscribe((a,e)=>{const t=Object.fromEntries(a);r.submit(e,t),r.draw("outputTexture")});const h=new m;function c(a){const{addedAssets:e,deletedAssetIds:t,graphId:n}=h.update(b(a));x(e[n]),i.transaction(e,t,n)}const o=document.getElementById("inputRange");let s=parseFloat(o.value)/100;o.addEventListener("input",()=>{s=parseFloat(o.value)/100,c(s)});c(s);
