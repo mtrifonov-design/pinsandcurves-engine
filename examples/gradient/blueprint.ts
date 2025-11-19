@@ -1,4 +1,4 @@
-import { DrawOp, Instances, Texture, Uniforms } from "../../lib/src";
+import { DrawOp, Instances, Texture, Uniforms } from "pinsandcurves-engine";
 import DrawGradient from './DrawGradient/main.ts';
 import DrawLissajousCurve from "./DrawLissajousCurve/main.ts";
 import DrawPoints from "./DrawPoints/main.ts";
@@ -132,5 +132,5 @@ function main2(input: number) {
 }
 
 export type { GradientRendererProps };
-
+export { defaultProps }
 export default main2;

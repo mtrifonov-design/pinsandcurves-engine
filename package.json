@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "mermaid": "^11.12.1",
-    "vite-plugin-glsl": "^1.5.4"
+    "vite-plugin-glsl": "^1.5.4",
+    "pinsandcurves-engine": "file:lib"
   }
 }

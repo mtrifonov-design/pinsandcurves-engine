@@ -1,6 +1,6 @@
 import mermaid from "mermaid";
-import { getDependencies } from "../lib/src";
-import type { VirtualResourceGraph } from "../lib/src";
+import { getDependencies } from "pinsandcurves-engine";
+import type { VirtualResourceGraph } from "pinsandcurves-engine";
 
 const graphingContainer = document.getElementById("graphing-container");
 mermaid.initialize({ startOnLoad: false });

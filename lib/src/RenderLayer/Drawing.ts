@@ -5,6 +5,7 @@ import synchronizePhysicalResources from "./GPUBackend/synchronizePhysicalResour
 import clearInputNodes from "./GPUBackend/clearInputNodes";
 import performRenderPasses from "./GPUBackend/performRenderPasses";
 import blitToScreen from "./GPUBackend/blitToScreen";
+import readbackTexture from "./GPUBackend/readbackTexture";
 import type GPUBackend from "./GPUBackend/gpuBackend";
 
 class Drawing {
@@ -74,7 +75,13 @@ class Drawing {
         }
     }
     private readback(targetTexture : string) {
-        // todo
+        if (!this.graphId || !this.assets) throw new Error("Error")
+        return readbackTexture(
+            this.GPUBackend,
+            this.physicalResourceMap,
+            this.assets[this.graphId],
+            targetTexture,
+        )
     }
     capture(targetTexture : string) {
         this.synchronize(targetTexture);

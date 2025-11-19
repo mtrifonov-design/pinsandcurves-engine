@@ -2,8 +2,8 @@ import './style.css';
 import AssetStore from '../AssetStore.ts'
 import drawGraph from '../drawGraph.ts'
 import blueprint from './blueprint.ts'
-import { Drawing, GPUBackend, Blueprint } from '../../lib/src';
-import type { VirtualResourceGraph } from '../../lib/src';
+import { Drawing, GPUBackend, Blueprint } from "pinsandcurves-engine";
+import type { VirtualResourceGraph } from "pinsandcurves-engine";
 
 // Asset Store is a mock class simulating a database or state management system that we can subscribe to for changes.
 const assetStore = new AssetStore();

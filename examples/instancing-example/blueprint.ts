@@ -1,4 +1,4 @@
-import { DrawOp, Instances, Texture, Uniforms, Vertices } from "../../lib/src";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from "pinsandcurves-engine";
 import Triangle from "../utils/triangle";
 
 

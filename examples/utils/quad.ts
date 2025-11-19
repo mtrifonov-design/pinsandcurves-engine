@@ -1,4 +1,4 @@
-import { DrawOp, Instances, Texture, Uniforms, Vertices } from "../../lib/src";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from "pinsandcurves-engine";
 
 function Quad(
     vertices: { x: number, y: number, [key: string]: any }[],

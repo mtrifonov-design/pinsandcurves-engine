@@ -1,4 +1,4 @@
-import { DrawOp, Instances, Texture, Uniforms, Vertices } from "../../lib/src";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from "pinsandcurves-engine";
 import defaultTriangleInstanced from "../instancing-example/blueprint";
 import Quad from "../utils/quad";
 

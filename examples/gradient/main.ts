@@ -1,9 +1,9 @@
 import './style.css';
 import AssetStore from '../AssetStore.ts'
 import drawGraph from '../drawGraph.ts'
-import blueprint from './blueprint.ts'
-import { Drawing, GPUBackend, Blueprint } from '../../lib/src';
-import type { VirtualResourceGraph } from '../../lib/src';
+import blueprint, { defaultProps } from './blueprint.ts'
+import { Drawing, GPUBackend, Blueprint } from "pinsandcurves-engine";
+import type { VirtualResourceGraph } from "pinsandcurves-engine";
 
 // Asset Store is a mock class simulating a database or state management system that we can subscribe to for changes.
 const assetStore = new AssetStore();
@@ -43,6 +43,25 @@ let inputValue = parseFloat(inputRange.value) / 100;
 //   inputValue = parseFloat(inputRange.value) / 100;
 //   updateDrawing(inputValue);
 // });
+
+const saveFrameBtn = document.getElementById("saveFrameBtn") as HTMLButtonElement;
+saveFrameBtn.addEventListener("click", () => {
+  const pixels = drawing.capture("outputTexture");
+  const width = defaultProps.general.canvasDimensions[0];
+  const height = defaultProps.general.canvasDimensions[1];
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Unable to create 2D context for image saving");
+  const imageData = ctx.createImageData(width, height);
+  imageData.data.set(pixels);
+  ctx.putImageData(imageData, 0, 0);
+  const link = document.createElement("a");
+  link.download = 'frame.png';
+  link.href = canvas.toDataURL();
+  link.click();
+});
 
 let frame = 0;
 function loop() {

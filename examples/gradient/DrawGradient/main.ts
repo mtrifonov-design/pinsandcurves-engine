@@ -1,4 +1,4 @@
-import { DrawOp, Instances, Texture, Uniforms, Vertices } from "../../../lib/src";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from "pinsandcurves-engine";
 import vert from './vert.glsl';
 import frag from './frag.glsl';
 

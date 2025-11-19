@@ -1,5 +1,5 @@
 import type { GradientRendererProps } from "../blueprint";
-import { DrawOp, Instances, Texture, Uniforms, Vertices } from "../../../lib/src";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from "pinsandcurves-engine";
 import Quad from "../../utils/quad";
 
 const MAX_PARTICLES = 100;
