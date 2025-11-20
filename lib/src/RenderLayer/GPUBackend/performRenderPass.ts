@@ -26,6 +26,7 @@ function performRenderPass(
     const trPhysicalResourceId = isRotating 
         ? prm.namedResources[trPhysicalId].gpuResource
         : getTransientTextureId(
+            graph,
             resId,
             trSignature as TextureSignature,
             prm,

@@ -71,7 +71,7 @@ vec4 getColor(vec3 p, float t) {
             needsNormalization = false; 
             break;
         } else {
-            float w = weightFunction(distance, 0.3);
+            float w = weightFunction(distance, mixingIntensity);
             wTotal += w;
             accumulatedColor += color.rgb * w;
         }

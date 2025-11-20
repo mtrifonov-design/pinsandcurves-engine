@@ -42,7 +42,7 @@ body {
 }
 
 #graphing-container {
-    width: 400px; 
+    width: 800px; 
     overflow: hidden; 
     border:1px solid gray;
     display:flex;

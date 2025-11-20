@@ -14,6 +14,16 @@ function performRenderPasses(
     dirtyResources: DirtyResourceMap,
     gpuBackend: any,
 ) : [DirtyResourceMap, PhysicalResourceMap] {
+
+    // escape: if the target texture is not dirty, and resident, we can skip all render passes
+    const targetPhysicalId = derivePhysicalResourceId(targetTexture, assets[graphId][targetTexture].signature);
+    const targetResident = physicalResourceMap.namedResources[targetPhysicalId] !== undefined;
+    const targetDirty = dirtyResources[targetPhysicalId] !== undefined;
+    if (targetResident && !targetDirty) {
+        console.log("Skipping render passes, target texture is resident and not dirty");
+        return [dirtyResources, physicalResourceMap];
+    }
+
     const drm = { ...dirtyResources };
     const prm = { 
         namedResources: { ...physicalResourceMap.namedResources },
@@ -32,8 +42,9 @@ function performRenderPasses(
         return dirty || !resident;
     }))
     .map(resId => [resId, assets[graphId][resId]]);
-    
+
     const textureLifetimeMap = computeTextureLifetimes(renderPassSeq);
+    //console.log("Texture lifetimes:", textureLifetimeMap);
 
     let renderPassIdx = 0;
     for (const [resId, res] of renderPassSeq) {

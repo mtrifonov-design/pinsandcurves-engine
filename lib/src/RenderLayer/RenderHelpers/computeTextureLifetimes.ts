@@ -1,3 +1,4 @@
+import derivePhysicalResourceId from "./derivePhysicalResourceId";
 import type { RenderPassSequence, TextureLifetimesMap } from "./types";
 
 function updateLifetimes(lifetimes: TextureLifetimesMap, textureId: string, firstUseRenderPassIdx: number, firstUseDrawOpIdx: number, lastUseRenderPassIdx: number, lastUseDrawOpIdx: number) {
@@ -28,6 +29,7 @@ function computeTextureLifetimes(rps: RenderPassSequence) : TextureLifetimesMap 
 
     for (let passIdx = 0; passIdx < rps.length; passIdx++) {
         const targetTextureId = rps[passIdx][0];
+        //const physicalTargetTextureId = derivePhysicalResourceId(targetTextureId, rps[passIdx][1].signature as any);
         if (transientTextures.includes(targetTextureId)) {
             updateLifetimes(textureLifetimes,targetTextureId, passIdx, 0, passIdx, rps[passIdx][1].drawOps.length - 1);
         };
@@ -39,7 +41,7 @@ function computeTextureLifetimes(rps: RenderPassSequence) : TextureLifetimesMap 
             });
             for (const textureId of textures) {
                 if (transientTextures.includes(textureId)) {
-                    updateLifetimes(textureLifetimes,textureId, passIdx, drawOpIdx, passIdx, drawOpIdx);
+                    updateLifetimes(textureLifetimes,targetTextureId, passIdx, drawOpIdx, passIdx, drawOpIdx);
                 }
             }
         }

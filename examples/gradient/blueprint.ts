@@ -1,9 +1,11 @@
-import { DrawOp, Instances, Texture, Uniforms } from "pinsandcurves-engine";
+import { DrawOp, Instances, Texture, Uniforms } from 'pinsandcurves-engine';
 import DrawGradient from './DrawGradient/main.ts';
 import DrawLissajousCurve from "./DrawLissajousCurve/main.ts";
 import DrawPoints from "./DrawPoints/main.ts";
 import sharedInputs from "./sharedInputs/main.ts";
 import SampleDepthTexture from "./SampleDepthTexture/main.ts";
+import copyTexture from '../utils/copyTexture.ts';
+import DrawNoise from './DrawNoise/main.ts';
 
 type GradientRendererProps = {
   colors: { r: number; g: number; b: number }[];
@@ -13,8 +15,13 @@ type GradientRendererProps = {
     b: [number, number];
     c: [number, number];
   };
+  mixingIntensity: number;
+  noiseIntensity: number;
+  enableNoise: boolean;
+  xyRotation: [number, number];
   general: {
     canvasDimensions: [number, number];
+    showLissajousFigure: boolean;
   }
 }
 
@@ -37,10 +44,10 @@ const defaultProps: GradientRendererProps = {
     // { r: 0, g: 1, b: 1 },
     // { r: 1, g: 0, b: 1 },
 
-    { r: Math.pow(24/255,1.5), g: Math.pow(0,1.5), b: Math.pow(97/255,1.5) },
-    { r: Math.pow(79/255,1.5), g: Math.pow(23/255,1.5), b: Math.pow(135/255,1.5) },
-    { r: Math.pow(235/255,1.5), g: Math.pow(52/255,1.5), b: Math.pow(120/255,1.5) },
-    { r: Math.pow(235/255,1.5), g: Math.pow(119/255,1.5), b: Math.pow(60/255,1.5) },
+    { r: Math.pow(24 / 255, 1.5), g: Math.pow(0, 1.5), b: Math.pow(97 / 255, 1.5) },
+    { r: Math.pow(79 / 255, 1.5), g: Math.pow(23 / 255, 1.5), b: Math.pow(135 / 255, 1.5) },
+    { r: Math.pow(235 / 255, 1.5), g: Math.pow(52 / 255, 1.5), b: Math.pow(120 / 255, 1.5) },
+    { r: Math.pow(235 / 255, 1.5), g: Math.pow(119 / 255, 1.5), b: Math.pow(60 / 255, 1.5) },
   ],
   time: 0,
   lissajousParams: {
@@ -60,8 +67,14 @@ const defaultProps: GradientRendererProps = {
     // b: [1, 0.4],
     // c: [1, 1.0],
   },
+  mixingIntensity: 0.5,
+  xyRotation: [0.0, 0.0],
+  noiseIntensity: 0.2,
+  enableNoise: true,
   general: {
     canvasDimensions: [800, 600],
+    showLissajousFigure: true,
+
   }
 }
 
@@ -103,14 +116,37 @@ function main(props: GradientRendererProps) {
     displayUniforms: shared_inputs.display_uniforms,
   })
 
-  const outputTexture = Texture({
+  const gradientTexture = Texture({
     width: props.general.canvasDimensions[0],
     height: props.general.canvasDimensions[1],
   }, [
     drawGradient.data.draw,
+  ], [props.general.canvasDimensions[0], props.general.canvasDimensions[1]]);
+
+  const drawNoise = DrawNoise({
+    quad: shared_inputs.quad,
+    texture: gradientTexture,
+    lissajousUniforms: shared_inputs.lissajous_uniforms,
+    displayUniforms: shared_inputs.display_uniforms,
+  })
+
+  const renderTexture = Texture({
+    width: props.general.canvasDimensions[0],
+    height: props.general.canvasDimensions[1],
+  }, [
+    drawNoise.data.draw,
+  ], [props.general.canvasDimensions[0], props.general.canvasDimensions[1]]);
+
+  const outputTexture = Texture({
+    width: props.general.canvasDimensions[0],
+    height: props.general.canvasDimensions[1],
+  }, props.general.showLissajousFigure ? [
+    copyTexture(shared_inputs.quad, renderTexture),
     drawLissajousCurve.data.draw,
     drawPoints.data.draw,
-  ], [props.general.canvasDimensions[0], props.general.canvasDimensions[1]]);
+  ] : [
+    copyTexture(shared_inputs.quad, renderTexture)
+  ], [props.general.canvasDimensions[0], props.general.canvasDimensions[1], props.general.showLissajousFigure]);
   return {
     //outputTexture,
     shared_inputs,
@@ -119,7 +155,9 @@ function main(props: GradientRendererProps) {
     drawPoints,
     sampleDepthTex,
     outputTexture,
-    
+    renderTexture,
+    gradientTexture,
+
     //outputTexture: sampleDepthTex.texture,
   }
 }
@@ -131,6 +169,8 @@ function main2(input: number) {
   return scene;
 }
 
+export { defaultProps };
+
 export type { GradientRendererProps };
-export { defaultProps }
+
 export default main2;

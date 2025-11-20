@@ -1,5 +1,5 @@
 import type { GradientRendererProps } from "../blueprint";
-import { DrawOp, Instances, Texture, Uniforms, Vertices } from "pinsandcurves-engine";
+import { DrawOp, Instances, Texture, Uniforms, Vertices } from 'pinsandcurves-engine';
 import Quad from "../../utils/quad";
 
 const MAX_PARTICLES = 100;
@@ -15,9 +15,12 @@ function main(props: GradientRendererProps) {
         lissajous_a: 'vec2',
         lissajous_b: 'vec2',
         lissajous_c: 'vec2',
+        xyRotation: 'vec2',
         numParticles: 'int',
         numMaxParticles: 'int',
         time: 'float',
+        mixingIntensity: 'float',
+        noiseIntensity: 'float',
     }, () => {
         return {
             numParticles: props.colors.length,
@@ -26,6 +29,9 @@ function main(props: GradientRendererProps) {
             lissajous_a: props.lissajousParams.a,
             lissajous_b: props.lissajousParams.b,
             lissajous_c: props.lissajousParams.c,
+            mixingIntensity: props.mixingIntensity,
+            xyRotation: props.xyRotation,
+            noiseIntensity: props.noiseIntensity,
         }
     }, [props.colors.length, props.time, props.lissajousParams.a, props.lissajousParams.b, props.lissajousParams.c]);
 

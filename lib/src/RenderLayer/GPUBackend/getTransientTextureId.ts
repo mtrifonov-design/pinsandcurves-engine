@@ -1,10 +1,26 @@
 import type { TextureSignature } from "../../src/Types/VirtualResources";
+import type { VirtualResourceGraph } from "../../Types/VirtualResources";
 import derivePhysicalResourceId from "../RenderHelpers/derivePhysicalResourceId";
 import deriveSignatureId from "../RenderHelpers/deriveSignatureId";
 import type { PhysicalResourceMap, TextureLifetimesMap } from "../RenderHelpers/types";
 
 
+function getVirtualIdFromPhysicalId(
+    graph: VirtualResourceGraph,
+    physicalId: string,
+) {
+    for (const [virtualId, resource] of Object.entries(graph)) {
+        const signature = resource.signature as TextureSignature;
+        const derivedPhysicalId = derivePhysicalResourceId(virtualId, signature);
+        if (derivedPhysicalId === physicalId) {
+            return virtualId;
+        }
+    }
+    throw new Error(`Could not find virtual resource for physical id ${physicalId}`);
+}
+
 function getTransientTextureId(
+    graph: VirtualResourceGraph,
     virtualId: string,
     signature: TextureSignature,
     prm: PhysicalResourceMap,
@@ -36,8 +52,11 @@ function getTransientTextureId(
         })
         .map(([physId, res]) => physId) // and we continue filtering for those whose lifetime has ended
         .filter(physId => {
-            const lifetime = tlm[physId];
+            const virtId = getVirtualIdFromPhysicalId(graph, physId); 
+            //console.log("Checking transient texture", virtId, physId, tlm);
+            const lifetime = tlm[virtId];
             return lifetime.lastUseRenderPassIdx < renderPassIdx ||
+                    lifetime.firstUseRenderPassIdx > renderPassIdx ||
                    (lifetime.lastUseRenderPassIdx === renderPassIdx && lifetime.lastUseDrawOpIdx < drawOpIdx);
         });
         if (candidateIds.length === 0) throw new Error("No available transient texture could be found for allocation. This should never happen.");

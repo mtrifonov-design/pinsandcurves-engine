@@ -1,6 +1,6 @@
-import type { ResourceTypes } from "pinsandcurves-engine";
+import type { ResourceTypes } from 'pinsandcurves-engine';
 type Vertices = ResourceTypes.Vertices;
-import { DrawOp, Instances, Texture, Uniforms } from "pinsandcurves-engine";
+import { DrawOp, Instances, Texture, Uniforms } from 'pinsandcurves-engine';
 import vert from './vert.glsl';
 import frag from './frag.glsl';
 import type { GradientRendererProps } from "../blueprint";
