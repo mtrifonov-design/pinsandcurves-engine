@@ -81,8 +81,8 @@ class ProgramProvider {
 
 
         const vertexShaderSource = `#version 300 es
-        precision mediump float;
-        precision mediump int;
+        precision highp float;
+        precision highp int;
         ${this.programDescription.uniformProviderSignatures.map(sig => generateUniformBlockString(sig)).join('\n')}
         ${generateVertexBlockString(this.programDescription.vertexProviderSignature,this.programDescription.instanceProviderSignature)}
         ${this.programDescription.textureNames.map(name => `uniform sampler2D ${name};`).join('\n')}
@@ -90,8 +90,8 @@ class ProgramProvider {
         `;
 
         const fragmentShaderSource = `#version 300 es
-        precision mediump float;
-        precision mediump int;
+        precision highp float;
+        precision highp int;
         out vec4 outColor;
         ${this.programDescription.uniformProviderSignatures.map(sig => generateUniformBlockString(sig)).join('\n')}
         ${this.programDescription.textureNames.map(name => `uniform sampler2D ${name};`).join('\n')}

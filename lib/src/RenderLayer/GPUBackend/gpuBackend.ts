@@ -7,6 +7,8 @@ class GPUBackend {
 
     constructor(gl: WebGL2RenderingContext) {
         this.gl = gl;
+        // float extension 
+        this.gl.getExtension('EXT_color_buffer_float');
         this.resources = new Map();
     }
 

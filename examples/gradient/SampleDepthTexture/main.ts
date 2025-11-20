@@ -31,8 +31,9 @@ function main({
         }
     )
     const texture = Texture({
-        width: props.general.canvasDimensions[0],
-        height: props.general.canvasDimensions[1], 
+        width: Math.floor(props.general.canvasDimensions[0] / 4),
+        height: Math.floor(props.general.canvasDimensions[1] / 4),
+        format: 'rgba32f'
     }, [draw], [props.general.canvasDimensions[0]]);
     return { 
         texture,
