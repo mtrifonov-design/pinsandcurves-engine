@@ -1,0 +1,50 @@
+body {
+    display:flex;
+    flex-direction:column; 
+    justify-content:center; 
+    align-items:center; 
+    justify-content: center;
+    margin:0;
+    margin-top: 60px;
+    margin-bottom: 100px;
+    width: 100vw;
+
+}
+
+#code-render-graph-container {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+
+}
+
+#upper-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+/* #main-container {
+    width: 1220px; 
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+} */
+
+#mainCanvas {
+    border: 1px solid gray;
+}
+
+#render-graph-container {
+}
+
+#graphing-container {
+    width: 400px; 
+    overflow: hidden; 
+    border:1px solid gray;
+    display:flex;
+    align-items: center;
+}

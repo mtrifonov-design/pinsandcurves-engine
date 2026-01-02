@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => {
             instancing: resolve(__dirname, 'examples/instancing-example/index.html'),
             texture: resolve(__dirname, 'examples/texture-example/index.html'),
             gradient: resolve(__dirname, 'examples/gradient/index.html'),
+            lawnMower: resolve(__dirname, 'examples/lawn-mower/index.html'),
           },
         },
       },
