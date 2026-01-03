@@ -68,7 +68,6 @@ class TextureProvider {
     depthRenderbuffer: WebGLRenderbuffer | null = null;
     setup() {
         const { internalFormat, format, type } = getUploadInfo(this.description.type, this.gl);
-        //console.log(internalFormat, format, type)
         this.texture = this.gl.createTexture();
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
         this.gl.pixelStorei(this.gl.UNPACK_ALIGNMENT, 1);
@@ -122,7 +121,7 @@ class TextureProvider {
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
 
-        if (data instanceof HTMLImageElement) {
+        if (data instanceof HTMLImageElement || data instanceof HTMLCanvasElement || data instanceof ImageBitmap) {
             const { internalFormat } = getUploadInfo(this.description.type, gl);
             gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, format, type, data);
         } else if (data instanceof Float32Array || data instanceof Uint8Array) {

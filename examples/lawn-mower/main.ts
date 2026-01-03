@@ -27,24 +27,89 @@ const unsubscribe = assetStore.subscribe((store, graphId) => {
   drawing.draw("outputTexture");
 });
 
+type WorldState = {
+  lawnMowerInputImage: any,
+  lawnMowerPosition: { x: number, y: number },
+  lawnMowerOrientation: number,
+}
+
+
 // Now we create a "blueprint" which is a high-level representation of our rendering graph.
 const gfx = new Blueprint();
 
-function updateDrawing(inputValue: number) {
+function updateDrawing(inputValue: WorldState) {
   const { addedAssets, deletedAssetIds, graphId } = gfx.update(blueprint(inputValue));
   drawGraph(addedAssets[graphId] as VirtualResourceGraph); // updating the mermaid flow diagram
   assetStore.transaction(addedAssets, deletedAssetIds, graphId);
 }
 
-const inputRange = document.getElementById("inputRange") as HTMLInputElement;
-let inputValue = parseFloat(inputRange.value) / 100;
 
-inputRange.addEventListener("input", () => {
-  inputValue = parseFloat(inputRange.value) / 100;
-  updateDrawing(inputValue);
+const lawnMowerCanvas = document.createElement('canvas');
+lawnMowerCanvas.width = 512;
+lawnMowerCanvas.height = 512;
+const lawnMowerCtx = lawnMowerCanvas.getContext('2d')!;
+lawnMowerCtx.fillStyle = 'white';
+lawnMowerCtx.fillRect(0, 0, 512, 512);
+const worldState: WorldState = {
+  lawnMowerInputImage: lawnMowerCanvas,
+  lawnMowerPosition: { x: 0, y: 0 },
+  lawnMowerOrientation: 0,
+};
+
+document.addEventListener('keydown', (event) => {
+  event.preventDefault();
+  const step = 0.02;
+  const rotStep = 0.1;
+  let prevX, prevY;
+  const key = event.key;
+  if (key === "ArrowUp") {
+    
+    prevX = worldState.lawnMowerPosition.x;
+    prevY = worldState.lawnMowerPosition.y;
+    worldState.lawnMowerPosition.x += step * Math.cos(worldState.lawnMowerOrientation);
+    worldState.lawnMowerPosition.y += step * Math.sin(worldState.lawnMowerOrientation);
+    lawnMowerCtx.strokeStyle = 'black';
+    lawnMowerCtx.lineWidth = 100;
+    lawnMowerCtx.beginPath();
+    lawnMowerCtx.moveTo(
+      (prevX + 0.5) * 512,
+      (prevY + 0.5) * 512
+    );
+    lawnMowerCtx.lineTo(
+      (worldState.lawnMowerPosition.x + 0.5) * 512,
+      (worldState.lawnMowerPosition.y + 0.5) * 512
+    );
+    lawnMowerCtx.stroke();
+  }
+  if (key === "ArrowDown") {
+    prevX = worldState.lawnMowerPosition.x;
+    prevY = worldState.lawnMowerPosition.y;
+    worldState.lawnMowerPosition.y += -step * Math.sin(worldState.lawnMowerOrientation);
+    worldState.lawnMowerPosition.x += -step * Math.cos(worldState.lawnMowerOrientation);
+    lawnMowerCtx.strokeStyle = 'black';
+    lawnMowerCtx.lineWidth = 100;
+    lawnMowerCtx.beginPath();
+    lawnMowerCtx.moveTo(
+      (prevX + 0.5) * 512,
+      (prevY + 0.5) * 512
+    );
+    lawnMowerCtx.lineTo(
+      (worldState.lawnMowerPosition.x + 0.5) * 512,
+      (worldState.lawnMowerPosition.y + 0.5) * 512
+    );
+    lawnMowerCtx.stroke();
+  }
+  if (key === "ArrowLeft") {
+    worldState.lawnMowerOrientation -= rotStep;
+  }
+  if (key === "ArrowRight") {
+    worldState.lawnMowerOrientation += rotStep;
+  }
+
+  updateDrawing(worldState);
 });
 
-updateDrawing(inputValue);
+updateDrawing(worldState);
 
 
 
