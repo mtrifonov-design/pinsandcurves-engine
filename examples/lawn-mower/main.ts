@@ -150,7 +150,7 @@ function gameLoop() {
     const brightness = (r + g + b) / 3;
     cumBrightness += brightness;
     //console.log("brightness:", cumBrightness);
-    if (brightness > 5) {
+    if (brightness > 10) {
       allShort = false;
     }
   }
