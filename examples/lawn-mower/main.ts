@@ -55,7 +55,7 @@ function updateDrawing(inputValue: WorldState) {
   //const updatedBlueprint = blueprint(inputValue);
   //console.log("Updating drawing with new blueprint:", updatedBlueprint);
   const { addedAssets, deletedAssetIds, graphId } = gfx.update(blueprint(inputValue));
-  drawGraph(addedAssets[graphId] as VirtualResourceGraph); // updating the mermaid flow diagram
+  //drawGraph(addedAssets[graphId] as VirtualResourceGraph); // updating the mermaid flow diagram
   assetStore.transaction(addedAssets, deletedAssetIds, graphId);
 }
 
