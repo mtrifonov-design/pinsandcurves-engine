@@ -5,13 +5,14 @@ import blueprint from './blueprint.ts'
 import { Drawing, GPUBackend, Blueprint } from "pinsandcurves-engine";
 import type { VirtualResourceGraph } from "pinsandcurves-engine";
 
+import mowerImageUrl from './lawn-mower.png'
 
 const lawnMowerCanvas = document.createElement('canvas');
 lawnMowerCanvas.width = 512;
 lawnMowerCanvas.height = 512;
 const lawnMowerCtx = lawnMowerCanvas.getContext('2d')!;
 const lawnImg = new Image();
-lawnImg.src = '/pinsandcurves-engine/examples/lawn-mower/lawn-mower.png';
+lawnImg.src = mowerImageUrl;
 await new Promise((resolve) => {
   lawnImg.onload = () => resolve(true);
 });

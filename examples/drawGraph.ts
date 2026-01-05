@@ -15,7 +15,7 @@ async function drawGraph(graph: VirtualResourceGraph) {
         }
     }
     if (graphString !== lastGraphString) {
-        console.log("Rendering graph:", graphString, lastGraphString);
+        //console.log("Rendering graph:", graphString, lastGraphString);
         const { svg } = await mermaid.render("theGraph", graphString)
         graphingContainer!.innerHTML = "";
         graphingContainer!.innerHTML = svg;
