@@ -10,7 +10,6 @@ function lawnMowerScene(input: {
     lawnMowerOrientation: number,
 }
 ) {
-
     const quad = Quad(
         [
             { x: -1, y: -1, u: 0, v: 0 },

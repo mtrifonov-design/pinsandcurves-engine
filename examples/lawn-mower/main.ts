@@ -150,20 +150,22 @@ function gameLoop() {
     const brightness = (r + g + b) / 3;
     cumBrightness += brightness;
     //console.log("brightness:", cumBrightness);
-    if (brightness > 10) {
+    if (brightness > 25) {
       allShort = false;
     }
   }
   cumBrightness /= (data.data.length / 4);
   //console.log("cumBrightness:", cumBrightness);
   const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
-  const minutes = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
-  const seconds = String(elapsedSeconds % 60).padStart(2, '0');
+  const secondsLeft = Math.max(0, 200 - elapsedSeconds);
+
   //console.log("allShort:", allShort);
   if (allShort) {
-    document.getElementById("clock").innerText = `Done!. Time: ${minutes}:${seconds} 🎉`;
+    document.getElementById("clock").innerText = `Good job bud! 🎉`;
+  } else if (secondsLeft > 0) {
+    document.getElementById("clock").innerText = `Time Remaining: ${secondsLeft}s`;
   } else {
-    document.getElementById("clock").innerText = `Time: ${minutes}:${seconds}`;
+    document.getElementById("clock").innerText = `Time's up! ⏰`;
   }
 
   updateDrawing(worldState);
